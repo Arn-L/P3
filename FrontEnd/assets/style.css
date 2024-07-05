@@ -53,7 +53,8 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
-header {
+
+header div {/**modif*****header {*************/
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
@@ -125,6 +126,36 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+/*************************************************/
+/*******************modif debut************************/
+.filtre {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+	padding: 0px 300px 0px 300px;
+}
+.filtre div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+	border: solid #D9D9D9 2px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+.filtre a{
+	padding: 10px 20px;
+}
+.baniere{
+	
+	color:white;
+	background-color: black;
+	position:initial;
+}
+/*******************modif fin***************************/
+
 .gallery {
 	width: 100%;
 	display: grid;
