@@ -1,9 +1,7 @@
 /******** définition globales *********/
-//let filtreArrayDisplay = [];
-let allWorks =[]; 
-workFiltered = [];
-var categoryId = [];
-
+let allWorks =[];
+let works =[];
+const galleryHtml = document.querySelector(".gallery");
 
 function fetchWorks() {
     fetch("http://localhost:5678/api/works/", { method: "GET" })
@@ -11,7 +9,7 @@ function fetchWorks() {
         .then(result => {
             allWorks = result;
             workFiltered = allWorks;
-            console.log("in fetch allwoks=", allWorks);
+            console.log("in fetch allWoks=", allWorks);
         })
         .catch(error => console.log("Fletch works Error : " + error));
 }
@@ -26,57 +24,48 @@ function fetchCategories() {
         .catch(error => console.log("Fetch categories Error = " + error));
 }
 
-
 function displayCategories(categories) {
+    console.log("in display categories=", categories);
+
     const filterHtml = document.querySelector(".filtre");
-    console.log("in dispay categories=", categories);
+    
+
     categories.forEach(category => {
+        console.log("in forEach : category.id", category.id);
+        //création bouton catégorie (filtre)
         const buttonHtml = document.createElement("button");
         buttonHtml.innerText = category.name;
         filterHtml.appendChild(buttonHtml);
-        //filterArrayDisplay[category.id] = true;
-        categoryId = category.id;
-        
-        console.log("in forEach : categoryId", categoryId);
-
-        buttonHtml.addEventListener("click",  (category) => {
-           //filterArrayDisplay[categoryId] = !filterArrayDisplay[categoryId];
-            console.log("in EventListener : category=", category, "categoryId", categoryId);
-            galleryHtml = document.querySelector(".gallery");
-            galleryHtml.innerHTML="";
-            workFiltered = allWorks.filter((workItem) => {
-                console.log( "in EventListener workItem=",workItem.category.id);
+        //fonction bouton suppression works ciblées
+        buttonHtml.addEventListener("click",  function() {
+            console.log("in forEach : Listener ", category.id)
+            //tri works
+             worksFilter = allWorks.filter((workItem) => {
                 return workItem.category.id === category.id;
-                console.log("workfiltred =", workFiltered, "allworks =",allWorks);
-
-            displayWorks(workFiltered);
-
             });
-            
-        });
-
+            galleryHtml.innerHTML="";
+            displayGallery(worksFilter)
+         });
     });
-    displayWorks(allWorks);
 }
 
-function displayWorks(works) {
-    const galleryHtml = document.querySelector(".gallery");
-    console.log("in dispay works =", works);
+function displayGallery(works){
+    
     works.forEach(work => {
-        //console.log(work.category.id)
-        //if (filtreArrayDisplay[work.category.id]) {
-        
-            const figureHtml = document.createElement("figure");
-            const imgHtml = document.createElement("img");
-            imgHtml.src = work.imageUrl;
-            const figcaptionHtml = document.createElement("figcaption");
-            figcaptionHtml.innerText = work.title;
-            figureHtml.appendChild(imgHtml);
-            figureHtml.appendChild(figcaptionHtml);
-            galleryHtml.appendChild(figureHtml);
-        //}
+        const figureHtml = document.createElement("figure");
+        const imgHtml = document.createElement("img");
+        imgHtml.src = work.imageUrl;
+        const figcaptionHtml = document.createElement("figcaption");
+        figcaptionHtml.innerText = work.title;
+        figureHtml.appendChild(imgHtml);
+        figureHtml.appendChild(figcaptionHtml);
+        galleryHtml.appendChild(figureHtml);
     });
 }
+
+
+
 
 fetchWorks();
 fetchCategories();
+displayGallery(allWorks)
