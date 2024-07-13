@@ -1,71 +1,81 @@
-/******** définition globales *********/
-let allWorks =[];
-let works =[];
-const galleryHtml = document.querySelector(".gallery");
+/******** définitions *********/
+let allWorks = []
+var _download = true
+const galleryHtml = document.querySelector(".gallery")
+const filterHtml = document.querySelector(".filtre")
 
 function fetchWorks() {
     fetch("http://localhost:5678/api/works/", { method: "GET" })
         .then(response => response.json())
         .then(result => {
-            allWorks = result;
-            workFiltered = allWorks;
-            console.log("in fetch allWoks=", allWorks);
+            allWorks = result
+            console.log("in fetch allWoks=", allWorks)
         })
-        .catch(error => console.log("Fletch works Error : " + error));
+        .catch(error => console.log("Fletch works Error : " + error))
 }
 
 function fetchCategories() {
     fetch("http://localhost:5678/api/categories/", { method: "GET" })
         .then(response => response.json())
         .then(result => {
-            console.log("in fetch Categories=", result);
+            console.log("in fetch Categories=", result)
             displayCategories(result);
         })
-        .catch(error => console.log("Fetch categories Error = " + error));
+        .catch(error => console.log("Fetch categories Error = " + error))
 }
 
 function displayCategories(categories) {
-    console.log("in display categories=", categories);
-
-    const filterHtml = document.querySelector(".filtre");
-    
-
+    console.log("in display categories=", categories)
     categories.forEach(category => {
-        console.log("in forEach : category.id", category.id);
+        console.log("in forEach : category.id", category.id)
         //création bouton catégorie (filtre)
-        const buttonHtml = document.createElement("button");
-        buttonHtml.innerText = category.name;
-        filterHtml.appendChild(buttonHtml);
+        const buttonHtml = document.createElement("button")
+        buttonHtml.innerText = category.name
+        filterHtml.appendChild(buttonHtml)
         //fonction bouton suppression works ciblées
-        buttonHtml.addEventListener("click",  function() {
-            console.log("in forEach : Listener ", category.id)
+        buttonHtml.addEventListener("click", function () {
+            console.log("Listener =", category.id)
             //tri works
-             worksFilter = allWorks.filter((workItem) => {
-                return workItem.category.id === category.id;
-            });
-            galleryHtml.innerHTML="";
+            worksFilter = allWorks.filter((workItem) => {
+                return workItem.category.id === category.id
+            })
+            galleryHtml.innerHTML = ""
             displayGallery(worksFilter)
-         });
+        })
+    })
+    console.log("Button All ok")
+    //création bouton All (filtre)
+    const buttonAllHtml = document.createElement("button")
+    buttonAllHtml.innerText = "   Tout   "
+    filterHtml.appendChild(buttonAllHtml)
+    //fonction bouton reset iltre
+    buttonAllHtml.addEventListener("click", function () {
+        console.log("Listener = all")
+        galleryHtml.innerHTML = ""
+        displayGallery(allWorks)
     });
-}
-
-function displayGallery(works){
     
-    works.forEach(work => {
-        const figureHtml = document.createElement("figure");
-        const imgHtml = document.createElement("img");
-        imgHtml.src = work.imageUrl;
-        const figcaptionHtml = document.createElement("figcaption");
-        figcaptionHtml.innerText = work.title;
-        figureHtml.appendChild(imgHtml);
-        figureHtml.appendChild(figcaptionHtml);
-        galleryHtml.appendChild(figureHtml);
-    });
+    displayGallery(allWorks)
 }
 
+function displayGallery(works) {
+    console.log("displayGallery : works =", works)
+    works.forEach(work => {
+        const figureHtml = document.createElement("figure")
+        const imgHtml = document.createElement("img")
+        imgHtml.src = work.imageUrl
+        const figcaptionHtml = document.createElement("figcaption")
+        figcaptionHtml.innerText = work.title
+        figureHtml.appendChild(imgHtml)
+        figureHtml.appendChild(figcaptionHtml)
+        galleryHtml.appendChild(figureHtml)
+    });
+    if (_download) {
+        _download = !_download
+        console.log("-------- download completed ! ----------")
 
+    }
+}
 
-
-fetchWorks();
-fetchCategories();
-displayGallery(allWorks)
+fetchWorks()
+fetchCategories()
