@@ -30,26 +30,32 @@ function validLogin(usersData, userLogin) {
 function addListenerFormLog(){
     console.log("in addListenerFormLog : ")
 
-    const formLogin = document.querySelector(".formLog");
+    const formLogin = document.querySelector("#formLog");
     formLogin.addEventListener("submit", function (event){
         event.preventDefault();
-        const emailForm = event.target.querySelector("[name=email]").value;
-        const passwordForm = event.target.querySelector("[name=password]").value;
+        const emailForm = event.target.querySelector("#email").value;
+        const passwordForm = event.target.querySelector("#password").value;
 
         console.log("in addEventListener : formLogin=", formLogin, "| emailForm =", emailForm,", passwordForm =",passwordForm);
-        console.log("transtype event.json()=" , event.json());
 
         fetch("http://localhost:5678/api/users/login", { 
-            method: "GET",
-            headers: {"Authorization" : "Bearer " + TOKEN, "Content-Type": "application/json" },
-            body: {"email": string, "password": string}
+            method: "POST",
+            headers: {"Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: emailForm,
+                password: passwordForm
+            })
         })
         .then(response => response.json())
         .then(result => {
             console.log("in Listener Form :  result =", result);
             
-            validLogin(result, event.json())})
-        .catch(error => console.log("fetch error while connection, " + error))
+            validLogin(result, emailForm, passwordForm)
+            // result.token  le stoker dans le localstorage.
+
+            // supprimer le token du locastorage quand logout -> recharge la page avec mode administrateur, si existe un token.
+        })
+        .catch(error => console.log("fetch error while connection, " + error + error.status))
     })
 }
 
