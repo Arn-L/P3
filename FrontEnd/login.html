@@ -11,6 +11,7 @@
         rel="stylesheet">
     <meta name="description" content="">
     <link rel="stylesheet" href="./assets/style.css">
+    <script src="login.js" defer></script>
 </head>
 
 <body>
@@ -19,7 +20,7 @@
         <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
         <nav>
             <ul>
-                <li>projets</li>
+                <li><a href="./index.html">projets</a></li>
                 <li>contact</li>
                 <li>login</li>
                 <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
@@ -30,15 +31,16 @@
 
     <main>
         <section id="contact">
-            <h2>Log In</h2><form action="#" method="post">
-                <label for="E_mail">E-mail</label>
-                <input type="E_mail" name="E_mail" id="E_mail">
+            <h2>Log In</h2>
+            <form class="formLogin">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" required>
                 <label for="Password">Mot de passe</label>
-                <input type="Password" name="password" id="Password">
+                <input type="Password" name="password" id="password" required>
                 
                 <input type="submit" value="Se connecter">
-                <a href="#">Mot de passe oublié</a>
             </form>
+            <a href="#">Mot de passe oublié</a>
         </section>
     </main>
 

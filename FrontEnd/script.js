@@ -64,12 +64,3 @@ function displayWorks(works) {
 }
 
 fetchWorks();
-
-
-
-
-
-
-/*** connexion ****/
-
-
