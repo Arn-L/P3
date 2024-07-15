@@ -1,9 +1,30 @@
+console.log("loading script...")
+
 /******** définitions *********/
 let allWorks = []
 var _download = true
 const galleryHtml = document.querySelector(".gallery")
 const filterHtml = document.querySelector(".filtre")
+const logHtml = document.querySelector("#log")
 
+
+/***** modale de page *****/
+console.log("the modal is loading...")
+
+var token = (localStorage.getItem("token"))
+console.log("tokenStorage=", token)
+if(token != null){ 
+    logHtml.innerHTML='<a href="#">logout</a>'
+    logHtml.addEventListener("click", function () {
+        location.reload()
+    })
+} else {
+    logHtml.innerHTML='<a href="./login.html">login</a>'
+}
+
+
+
+/***** page projet */
 function fetchWorks() {
     fetch("http://localhost:5678/api/works/", { method: "GET" })
         .then(response => response.json())
