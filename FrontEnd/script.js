@@ -12,10 +12,13 @@ const logHtml = document.querySelector("#log")
 console.log("the modal is loading...")
 
 var token = (localStorage.getItem("token"))
-console.log("tokenStorage=", token)
+console.log("token storage=", token)
 if(token != null){ 
     logHtml.innerHTML='<a href="#">logout</a>'
     logHtml.addEventListener("click", function () {
+        localStorage.removeItem("token")
+        token = (localStorage.getItem("token"))
+        console.log("logout -> token storage=", token)
         location.reload()
     })
 } else {
@@ -91,11 +94,6 @@ function displayGallery(works) {
         figureHtml.appendChild(figcaptionHtml)
         galleryHtml.appendChild(figureHtml)
     });
-<<<<<<< HEAD
-}
-
-fetchWorks();
-=======
     if (_download) {
         _download = !_download
         console.log("-------- download completed ! ----------")
@@ -105,4 +103,3 @@ fetchWorks();
 
 fetchWorks()
 fetchCategories()
->>>>>>> c8f878fb241d149b9b95200c6b37788f231f2228
