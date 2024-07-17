@@ -1,73 +1,62 @@
-console.log("login.js is loading..." )
-localStorage.removeItem("token");
+console.log("login.js is loading...")
+var _download = true
+localStorage.removeItem("token")
+
 /******* défintions *******/
-let controller = new AbortController()
-console.log("Token =",JSON.stringify(localStorage.getItem("token")))
+const controller = new AbortController()
+const signal = controller.signal
+console.log("Token =", JSON.stringify(localStorage.getItem("token")))
 
 function addListenerFormLogin() {
     console.log("in addListenerFormLog : ")
-
     const formLogin = document.querySelector("#formLog");
     formLogin.addEventListener("submit", function (event) {
         event.preventDefault()
         const emailForm = event.target.querySelector("#email").value
         const passwordForm = event.target.querySelector("#password").value
-        console.log("in addEventListener : formLogin=", formLogin, "| emailForm =", emailForm, ", passwordForm =", passwordForm)     
-        
-        var statusToken=false //variable d'interuption non identifié
+        console.log("in addEventListener : formLogin=", formLogin, "| emailForm =", emailForm, ", passwordForm =", passwordForm)
+
+        var statusToken = false //variable de controle d l'authentfication
         fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: {
-                 "Content-Type": "application/json" ,
-                 signal: controller.signal
-                },
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({
                 email: emailForm,
                 password: passwordForm
-            })
-        })       
+            }),
+        })
             .then(response => {
-                
-                if (response.ok){
-                    response.json()
-                    statusToken =true                    
-                } else {                    
+                if (response.ok) {
+                    statusToken = true
+                    return response.json()
+                } else {
                     console.log("erreur 1 d'indentifiant")
-                    alert("Erreur dans l’identifiant ou le mot de passe")
-                    controller.abort() // ne fonctionne pas...?
-                    location.reload()
-             }})
-            .then(result => {
-                if (statusToken){
-                        console.log("...Token is in local Storage", JSON.stringify(result))
-                        localStorage.setItem("token", result)
-                        window.location = "./index.html"
                 }
-                    
-                    
+            })
+            .then(result => {
+                if (statusToken) {
+                    console.log("...Token is in local Storage", result.token)
+                    localStorage.setItem("token", result.token)
+                    window.location = "./index.html"
+                } else {
+                    console.log("erreur 2 d'indentifiant")
+                    alert("Erreur dans l’identifiant ou le mot de passe")
+                    console.log("Token =", JSON.stringify(localStorage.getItem("token")))
+                    location.reload()
+                }
             })
             .catch(error => {
                 console.log("fetch error while connection, " + error + error.status)
-
             })
     })
 }
 
-    // result.token  le stoker dans le localstorage.
-    /***
-     * localStorage.setItem("truc","machin")
-     * 
-     * var chose = localStorage.getItem("truc")
-     * 
-     * localStorage.remeItem("truc")
-     * localStorage.clear()
-     *  
-     * 
-    
-    
-    
-     */
-    // supprimer le token du locastorage quand logout -> recharge la page avec mode administrateur, si existe un token.
+if (_download) {
+    _download = !_download
+    console.log("-------- download login completed ! ----------")
+}
 
-
+/**** excécution ****/
 addListenerFormLogin();

@@ -99,6 +99,18 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+.close {
+	font-size: 30px;
+}
+
+#banner {
+	text-align: center;
+	background-color: black;
+	color: white;
+	margin: 0;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -216,7 +228,3 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
-
-button #B1{
-	
-} 
