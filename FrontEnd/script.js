@@ -3,7 +3,6 @@ console.log("loading script...")
 /******** définitions *********/
 let allWorks = []
 var _download = true
-var modal = document.getElementById("Modal")
 var closeBtn = document.querySelector(".close")
 const galleryHtml = document.querySelector(".gallery")
 const adminHtml = document.querySelector(".admin")
@@ -11,43 +10,42 @@ const filterHtml = document.querySelector(".filtre")
 const bannerHtml = document.querySelector("#banner")
 const logHtml = document.querySelector("#log")
 
+
 /**** initialisation ****/
 var token = (localStorage.getItem("token"))
 console.log("token storage=", token)
 
-/**** HTML conditionnel ****/
-if (token != null) {
-    adminHtml.style.display = "flex";
 
+/**** HTML conditionnel - affichage page Mode édition ****/
+if (token != null) {
+    //menu navigation
     logHtml.innerHTML = '<a href="#">logout</a>'
     logHtml.addEventListener("click", function () {
         localStorage.removeItem("token")
-        token = (localStorage.getItem("token"))
-        console.log("logout -> token storage=", token)
         location.reload()
     })
-    closeBtn.addEventListener("click", function () {
-        console.log("the modal is closing...")
-        modal.style.display = "none"
+    //mode édition de la page principale
+    const editionHtml = document.querySelectorAll(".edition").forEach(target => {
+        target.style.display = null
     })
-    function openModal() {
+    filterHtml.style.display = "none"
+    //log
+    token = (localStorage.getItem("token"))
+    console.log("logout -> token storage=", token)
 
-        console.log("the modal is loading...")
-        modal.style.display = "block"
-        location.reload()
-
-    }
-    closeBtn.addEventListener("click", function () {
-        modal.style.display = "none"
-        location.reload()
-        openModal()
-    })
 } else {
-    adminHtml.style.display = "none"
+    //menu navigation
     logHtml.innerHTML = '<a href="./login.html">login</a>'
 }
 
-/**** page projet ****/
+
+
+
+
+
+
+
+/**** page principale - projets ****/
 function fetchWorks() {
     fetch("http://localhost:5678/api/works/", { method: "GET" })
         .then(response => response.json())
