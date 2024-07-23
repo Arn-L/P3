@@ -24,9 +24,12 @@ const closeModal = function (event){
     console.log("the modal is closed...")
 }
 
-    closeBtn.addEventListener("click", function () {
-       
-        modal.style.display = "none"
-    })
-    
-    console.log("...the modal is loaded")
+
+const modifierHtml = document.querySelector(".modifier")
+modifierHtml.addEventListener("clilc", openModal)
+
+const closeBtn = document.querySelector(".close")
+closeBtn.addEventListener("click", closeModal)
+
+console.log("the modal is loading...")
+

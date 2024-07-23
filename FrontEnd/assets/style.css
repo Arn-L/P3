@@ -245,7 +245,7 @@ footer nav ul {
 	font-size: 20px;
 }
 
-.modal {
+#modal {
 	position: fixed;
 	display: flex;
 	align-items: center;
@@ -258,10 +258,37 @@ footer nav ul {
 }
 
 .modalContent{
-	overflow:auto;
-	width: 600px;
-	max-width: calc(100vw - 20px);
-	max-height: calc(100vh - 20px);
-	padding: 20px;
+	width: 50%;
+	max-width: calc(100vw - 30px);
+	max-height: calc(100vh - 30px);
+	padding: 80px;
 	background-color: #FFF;
+}
+
+#modalGallery {
+	width: 100%;
+	display: grid;
+
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+	grid-column-gap: 10px;
+
+	
+}
+
+#modalGallery img {
+	width: 100%;
+
+}
+
+#modal input{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #611d5b;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
 }

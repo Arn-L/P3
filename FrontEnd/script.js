@@ -3,7 +3,6 @@ console.log("loading script...")
 /******** définitions *********/
 let allWorks = []
 var _download = true
-var closeBtn = document.querySelector(".close")
 const galleryHtml = document.querySelector(".gallery")
 const adminHtml = document.querySelector(".admin")
 const filterHtml = document.querySelector(".filtre")
@@ -25,7 +24,7 @@ if (token != null) {
         location.reload()
     })
     //mode édition de la page principale
-    const editionHtml = document.querySelectorAll(".edition").forEach(target => {
+    document.querySelectorAll(".edition").forEach(target => {
         target.style.display = null
     })
     filterHtml.style.display = "none"
@@ -111,12 +110,109 @@ function displayGallery(works) {
         figureHtml.appendChild(imgHtml)
         figureHtml.appendChild(figcaptionHtml)
         galleryHtml.appendChild(figureHtml)
-    });
-    if (_download) {
-        _download = !_download
-        console.log("-------- download script completed ! ----------")
-    }
+    })
+}
+
+if (_download) {
+    _download = !_download
+    console.log("-------- download script completed ! ----------")
 }
 
 fetchWorks()
 fetchCategories()
+
+
+
+  /*** script modale ***/
+console.log("the modal is loading...")
+currentModal = null
+const modalHtml =document.querySelector("#modal")
+const titleModalHtml = document.querySelector("#titlemodal")
+const buttonModalHtml = document.querySelector("#modalButton")
+
+
+
+function openModal(event) {
+    event.preventDefault()
+    const target = document.querySelector(event.target.getAttribute('href'))
+    modalHtml.style.display = null
+    modalHtml.removeAttribute('aria-hidden')
+    modalHtml.setAttribute('aria-modal', 'true')
+    currentModal = target
+    displayModal(currentModal.id) 
+    //log
+    console.log("the modal",currentModal.id," is opened...")
+}
+
+const closeModal = function (event){
+    if (currentModal === null) return
+    event.preventDefault()
+    modalHtml.style.display = "none"
+    modalHtml.setAttribute('aria-hidden', "true")
+    modalHtml.removeAttribute('aria-modal')
+    currentModal.innerHTML = ""
+
+    //log
+    console.log("the modal",currentModal.id," is closed...")
+    currentModal = null
+    
+}
+
+const modifierHtml = document.querySelector(".modifier")
+modifierHtml.addEventListener("click", openModal)
+
+const closeBtn = document.querySelector(".close")
+closeBtn.addEventListener("click", closeModal)
+
+function displayModal(event) {
+    if (event === "modalGallery") {
+        displayGalleryModal(allWorks)
+    } else {
+        titleModalHtml.innerHTML="Ajout photo"
+        buttonModalHtml.setAttribute('value',"Valider")
+        document.querySelector("#modalAddPhoto").style.display= null
+    }
+    //log
+    console.log("the modal",currentModal.id," is opening...")
+
+
+}
+
+
+function displayGalleryModal(works) {
+    //présentation - constant
+    titleModalHtml.innerHTML='Galerie photo'
+    buttonModalHtml.setAttribute('value',"Ajouter une photo")
+    //contenu - variable
+    const modalGalleryHtml = document.querySelector("#modalGallery")
+    modalGalleryHtml.innerHTML = ""
+    works.forEach(work => {
+        const figureHtml = document.createElement("figure")
+        const imgHtml = document.createElement("img")
+        imgHtml.src = work.imageUrl
+        figureHtml.appendChild(imgHtml)
+        modalGalleryHtml.appendChild(figureHtml)
+    })
+    //log
+    console.log("displayGalleryModal: works =", works)
+}
+
+
+function displayAddPhoto() {
+    document.querySelector(".addPhoto").style.display= null
+
+    
+        
+}
+
+
+
+
+
+
+
+
+
+
+
+console.log("...the modal is loaded")
