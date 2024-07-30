@@ -104,7 +104,7 @@ li:hover {
 	font-size: 30px;
 }
 
-#banner {
+#banner {/*a corriger*/
 	text-align: center;
 	background-color: black;
 	color: white;
@@ -147,13 +147,14 @@ li:hover {
 }
 /*************************************************/
 /*******************modif debut************************/
+* { box-sizing: border-box; }
+
 .filtre {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     margin-bottom: 40px;
-    box-sizing: border-box;
 	padding: 0px 300px 0px 300px;
 }
 .filtre div {
@@ -258,31 +259,25 @@ footer nav ul {
 }
 
 .modalContent{
-	width: 50%;
-	max-width: calc(100vw - 30px);
-	max-height: calc(100vh - 30px);
-	padding: 80px;
+	width: 630px;
+	height: 688px;
+	align-items: center;
 	background-color: #FFF;
 }
 
-#modalGallery {
-	width: 100%;
+.modalGallery {
+	padding: 60px 150px;
 	display: grid;
-
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-column-gap: 20px;
 	grid-row-gap: 20px;
-	grid-column-gap: 10px;
-
-	
+	grid-column-gap: 5px;
 }
 
-#modalGallery img {
-	width: 100%;
-
+.modalGallery img {
+	width: 76px;
 }
 
-#modal input{
+.jsModalButton{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -291,4 +286,22 @@ footer nav ul {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+
+/*** Modale Ajout photo ***/
+
+#modalAddPhoto {
+	width: 76px;
+}
+
+.pictureBox {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+}
+
+#pictureBox img{
+	width: 100%;
 }

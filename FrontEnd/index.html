@@ -48,21 +48,47 @@
 
 
 
-
-
 	<main>
 		<aside id="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
 			<div class="modalContent">
-			  <a href="#" class="close">&times;</a>
-			  <h2 id="titlemodal"></h2>
-			  <div id="modalGallery"></div>
-			  <div id="modalAddPhoto">u</div>
 
-			  <input id="modalButton" type="submit" value="" class="button">
+				<button id="jsModalClose" class="js" data-modal="#modal">
+					&times;
+				</button>
+
+				<div id="modalGallery" >
+					<h2 class="titleModal">Galerie photo</h2>
+					<div class="modalGallery"></div>
+					<input id="addButton" class="js jsModalButton" type="submit" value="Ajouter une photo">
+				</div>
+
+				<div id="modalAddPhoto" aria-hidden="true" style="display: none;">
+					<h2 class="titleModal">Ajout photo</h2>
+					<section class="sectionAddPhoto"></section>
+					<input id="validButton" class="js jsModalButton" type="submit" value="Valider">
+				</div>
+
+			</div>
 		</aside>
 
 
 
+		<!-- code modal ajouter une photo
+						<div class="pictureBox" style="display: none;">
+							<img scr="./assets/icons/icone-d-image.png" alt="">
+						</div>
+
+						<section id="inputModal">
+
+							<form id="photoInfo">
+								<label for="titre">Titre</label>
+								<input type="string" name="titre" id="titre">
+								<label for="categorie">Catégorie</label>
+								<input type="categorie" name="categorie" id="categorie">
+							</form>
+
+					</div>
+-->
 
 
 
@@ -85,24 +111,26 @@
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
 					décorateur(trice)</p>
 			</article>
+
+
+
+
+
+
+
 		</section>
 		<section id="portfolio">
 			<div class="title">
 				<h2>Mes Projets</h2>
-				<a class="edition modifier" href="#modalGallery"  style="display: none;">modifier</a>
+				<button class="modify edition" data-modal="#modal" style="display: none;">modifier</button>
 			</div>
+
+
+
 
 
 			<div class="filtre">
 			</div>
-
-
-
-
-
-
-
-
 			<div class="gallery">
 			</div>
 		</section>

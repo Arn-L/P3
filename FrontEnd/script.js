@@ -123,69 +123,85 @@ fetchCategories()
 
 
 
-  /*** script modale ***/
-console.log("the modal is loading...")
+/*** script modale ***/
+/* La gallerie photo de la modale est chargé initialement, puis actualisé (ajout/suppression)
+/* Les pages contenus "Gallerie photo" et "Ajout photo" sont générés inialement en Html, puis
+/* activé ou désactivté en fonction de la navigation dans la modale
+/* La fonction openModal(event) gère l'affichage de la modale
+/* et du contenu en fonction de l'évènement des 'click' boutons 
+/* 
+ */
+console.log("the modal script is loading...")
 currentModal = null
-const modalHtml =document.querySelector("#modal")
-const titleModalHtml = document.querySelector("#titlemodal")
-const buttonModalHtml = document.querySelector("#modalButton")
+const modalHtml = document.querySelector("#modal")
 
+// Bouton [modifier] page édition
+const modifyHtml = document.querySelector(".modify")
+modifyHtml.addEventListener("click", openModal)
 
+/**** sous fonctions du contenu de la modale ****/
+// activation balise Html
+function enableModal(target) {
+    target.style.display = null
+    target.removeAttribute('aria-hidden')
+    target.setAttribute('aria-modal', 'true')
+}
+// Désactivation balise Html
+function disableModal(target) {
+    if (target === null) retrun
+    target.style.display = "none"
+    target.setAttribute('aria-hidden', 'true')
+    target.removeAttribute('aria-modal')
+}
+// affichage modale gallerie
+function displayGalleryModal(target) {
+    disableModal(document.querySelector("#modalAddPhoto"))
+    enableModal(document.querySelector("#modalGallery"))
+}
+//affichage modale ajout photo
+function displayAddPhotoModal() {
+    disableModal(document.querySelector("#modalGallery"))
+    enableModal(document.querySelector("#modalAddPhoto"))
+}
 
 function openModal(event) {
     event.preventDefault()
-    const target = document.querySelector(event.target.getAttribute('href'))
-    modalHtml.style.display = null
-    modalHtml.removeAttribute('aria-hidden')
-    modalHtml.setAttribute('aria-modal', 'true')
-    currentModal = target
-    displayModal(currentModal.id) 
-    //log
-    console.log("the modal",currentModal.id," is opened...")
-}
+    const target = document.querySelector(event.target.getAttribute("data-modal"))
+    if (currentModal === null) {
+        console.log("first opening")
+        printHtmlGalleryModal(allWorks) //chargement code HTML de la gallerie modale <div modalGallery>
+        //printHtmlAddPhotoModal() 
+        //target = document.querySelector("#modal")
+        document.querySelector("#jsModalClose").addEventListener('click', closeModal)
+        document.querySelector("#addButton").addEventListener('click', displayAddPhotoModal)
+        document.querySelector("#validButton").addEventListener('click', displayGalleryModal)
 
-const closeModal = function (event){
-    if (currentModal === null) return
-    event.preventDefault()
-    modalHtml.style.display = "none"
-    modalHtml.setAttribute('aria-hidden', "true")
-    modalHtml.removeAttribute('aria-modal')
-    currentModal.innerHTML = ""
-
-    //log
-    console.log("the modal",currentModal.id," is closed...")
-    currentModal = null
-    
-}
-
-const modifierHtml = document.querySelector(".modifier")
-modifierHtml.addEventListener("click", openModal)
-
-const closeBtn = document.querySelector(".close")
-closeBtn.addEventListener("click", closeModal)
-
-function displayModal(event) {
-    if (event === "modalGallery") {
-        displayGalleryModal(allWorks)
-    } else {
-        titleModalHtml.innerHTML="Ajout photo"
-        buttonModalHtml.setAttribute('value',"Valider")
-        document.querySelector("#modalAddPhoto").style.display= null
     }
+    console.log("in openModal, target =", target)
+    enableModal(target)
+    currentModal=target.id
     //log
-    console.log("the modal",currentModal.id," is opening...")
-
+    console.log("the ", target.id, " is opened...")
+}
+ 
+const closeModal = function (event) {
+    event.preventDefault()
+    if (currentModal === null) return
+    const target = document.querySelector(event.target.getAttribute("data-modal"))
+    console.log("in closeModal event=", event) ; console.log("target=", target)
+    disableModal(target)
+    if (target === "#modal") {
+        document.querySelectorAll("js").removeEventListener("click", closeModal)
+        document.querySelector("#modalGallery div").innerHTML= ""
+        document.querySelector("#AddPhoto div").innerHTML= ""
+        currentModal = null
+    }
+    console.log("the ", target.id, " is closed...")
 
 }
 
-
-function displayGalleryModal(works) {
-    //présentation - constant
-    titleModalHtml.innerHTML='Galerie photo'
-    buttonModalHtml.setAttribute('value',"Ajouter une photo")
-    //contenu - variable
-    const modalGalleryHtml = document.querySelector("#modalGallery")
-    modalGalleryHtml.innerHTML = ""
+function printHtmlGalleryModal(works) {
+    const modalGalleryHtml = document.querySelector(".modalGallery")
     works.forEach(work => {
         const figureHtml = document.createElement("figure")
         const imgHtml = document.createElement("img")
@@ -194,16 +210,22 @@ function displayGalleryModal(works) {
         modalGalleryHtml.appendChild(figureHtml)
     })
     //log
-    console.log("displayGalleryModal: works =", works)
+    console.log("printHtmlGalleryModal: works =", works)
 }
 
+function printHtmlAddPhotoModal() {
+    document.querySelector("#sectionAddPhoto").innerHTML =`
+    <p>section AddPhoto</p>    
+    `
+    /*<div class="pictureBox">
+        <img scr="./assets/icons/icone-d-image.png" alt="">
+    </div>
+    `
+    */
 
-function displayAddPhoto() {
-    document.querySelector(".addPhoto").style.display= null
-
-    
-        
+    // <input type="file">
 }
+
 
 
 
