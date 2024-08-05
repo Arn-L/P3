@@ -9,6 +9,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="script.js" defer></script>
@@ -51,32 +54,44 @@
 	<main>
 		<aside id="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
 			<div class="modalContent">
-
+				<button id="jsModalBefore" class="js" data-modal="#modal" style="display: none;">
+					<-
+				</button>
 				<button id="jsModalClose" class="js" data-modal="#modal">
 					&times;
 				</button>
 
 				<div id="modalGallery" >
 					<h2 class="titleModal">Galerie photo</h2>
-					<div class="modalGallery"></div>
+					<section id="sectionGallery"></section>
 					<input id="addButton" class="js jsModalButton" type="submit" value="Ajouter une photo">
 				</div>
 
-				<div id="modalAddPhoto" aria-hidden="true" style="display: none;">
+				<div id="modalAddPhoto" class="inputFields" aria-hidden="true" style="display: none;">
 					<h2 class="titleModal">Ajout photo</h2>
-					<section class="sectionAddPhoto"></section>
-					<input id="validButton" class="js jsModalButton" type="submit" value="Valider">
-				</div>
-
-			</div>
-		</aside>
-
-
-
-		<!-- code modal ajouter une photo
-						<div class="pictureBox" style="display: none;">
-							<img scr="./assets/icons/icone-d-image.png" alt="">
-						</div>
+					<section id="sectionAddPhoto">
+						
+						<!-- https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file -->
+						<form id="formFichier" method="post" enctype="multipart/form-data">
+							<div>
+								<label for="image_uploads">
+									<div class="labelInputPhoto">
+										<section class="preview">
+											<img id="exemple" src="./assets/icons/icone-d-image-grey.png" alt="fichier à télécharger">
+										</section>
+										<div>+ Ajout photo</div>
+										<p>jpg, png: 4mo max</p>
+									</div>
+								</label>
+						
+								<input type="file" id="image_uploads" name="image_uploads" accept="image/.jpg, image/.jpeg, image/.png"
+									multiple />
+							</div>
+							<div>
+								<button type="submit" id="validButton">Envoyer</button>
+							</div>
+						</form>
+						
 
 						<section id="inputModal">
 
@@ -88,7 +103,16 @@
 							</form>
 
 					</div>
--->
+					</section>
+				</div>
+
+			</div>
+		</aside>
+
+
+
+		
+						
 
 
 
@@ -146,7 +170,7 @@
 
 
 
-		<section id="contact">
+		<section id="contact" class="inputFields">
 			<h2>Contact</h2>
 			<p>Vous avez un projet ? Discutons-en !</p>
 			<form action="#" method="post">

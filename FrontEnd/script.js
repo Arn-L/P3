@@ -1,14 +1,16 @@
 console.log("loading script...")
 
 /******** définitions *********/
-let allWorks = []
 var _download = true
-const galleryHtml = document.querySelector(".gallery")
+let allWorks = []
+let suppList = []
+
+/*
 const adminHtml = document.querySelector(".admin")
 const filterHtml = document.querySelector(".filtre")
 const bannerHtml = document.querySelector("#banner")
 const logHtml = document.querySelector("#log")
-
+*/
 
 /**** initialisation ****/
 var token = (localStorage.getItem("token"))
@@ -16,8 +18,11 @@ console.log("token storage=", token)
 
 
 /**** HTML conditionnel - affichage page Mode édition ****/
+const logHtml = document.querySelector("#log")
+const filterHtml = document.querySelector(".filtre")
 if (token != null) {
     //menu navigation
+    
     logHtml.innerHTML = '<a href="#">logout</a>'
     logHtml.addEventListener("click", function () {
         localStorage.removeItem("token")
@@ -101,7 +106,10 @@ function displayCategories(categories) {
 
 function displayGallery(works) {
     console.log("displayGallery : works =", works)
+    const galleryHtml =document.querySelector(".gallery") // Gallerie page projet
+    const modalGalleryHtml = document.querySelector("#sectionGallery") // Gallerie de la modale
     works.forEach(work => {
+        // HTML de la gallerie projet
         const figureHtml = document.createElement("figure")
         const imgHtml = document.createElement("img")
         imgHtml.src = work.imageUrl
@@ -110,18 +118,60 @@ function displayGallery(works) {
         figureHtml.appendChild(imgHtml)
         figureHtml.appendChild(figcaptionHtml)
         galleryHtml.appendChild(figureHtml)
+        console.log("in forEach work.id =", work.id)
+        // HTML de la gallerie modale
+        const figureGMHtml = document.createElement("figure")
+        figureGMHtml.id = "F"+work.id.toString()
+        const imgGMHtml = document.createElement("img")
+        imgGMHtml.src = work.imageUrl
+        const buttonGMHtml = document.createElement("button")
+        const trashGMHtml = document.createElement("i")
+        trashGMHtml.className = "fa-solid fa-trash-can"//trashGMHtml.id = "T"+work.id
+        figureGMHtml.appendChild(imgGMHtml)
+        figureGMHtml.appendChild(buttonGMHtml)
+        buttonGMHtml.appendChild(trashGMHtml)
+        modalGalleryHtml.appendChild(figureGMHtml)
+        buttonGMHtml.addEventListener('click', function() {
+          fetchWorks()
+          var avant = allWorks.length
+          console.log("avant suppression allWork=", allWorks)
+          // Suppresion dans la base de donnée
+
+          fetch("http://localhost:5678/api/works/"+work.id, {
+            method: "DELETE",
+            headers: {Authorization: "Bearer "+token}  
+            })
+        .then(response => response.json())
+        .then(result => {
+          console.log("supprime",result)
+            //if (result.error === {}) alert("Erreur d'authorisation à la base de donnée")
+            
+        })
+        .catch(error => console.log("Erreur d'accès à la base de donnée lors de la suppression", error))
+          /*if ((avant !== (allWorks.length+1)) || (allWorks.find(element => element.id === work.id) !== undefined)) {
+            alert("Erreur lors de la suppression dans la base donnée !")
+            return
+          }
+          */
+          //suppression sur la page porjet & la modale
+          allWorks.splice(work.id-1,1)
+          figureGMHtml.remove()
+          figureHtml.remove()
+          console.log("après suppression allWorks=", allWorks)
+          console.log("Picture deleted !")
+        })
     })
+    //log
+    console.log("printHtmlGalleryModal: works =", works)
 }
 
 if (_download) {
     _download = !_download
-    console.log("-------- download script completed ! ----------")
+    console.log("-------- download main page script completed ! ----------")
 }
 
 fetchWorks()
 fetchCategories()
-
-
 
 /*** script modale ***/
 /* La gallerie photo de la modale est chargé initialement, puis actualisé (ajout/suppression)
@@ -154,14 +204,18 @@ function disableModal(target) {
     target.removeAttribute('aria-modal')
 }
 // affichage modale gallerie
-function displayGalleryModal(target) {
+function displayGalleryModal() {
     disableModal(document.querySelector("#modalAddPhoto"))
     enableModal(document.querySelector("#modalGallery"))
+    disableModal(document.querySelector("#jsModalBefore"))
+
 }
 //affichage modale ajout photo
 function displayAddPhotoModal() {
     disableModal(document.querySelector("#modalGallery"))
     enableModal(document.querySelector("#modalAddPhoto"))
+    enableModal(document.querySelector("#jsModalBefore"))
+
 }
 
 function openModal(event) {
@@ -169,18 +223,14 @@ function openModal(event) {
     const target = document.querySelector(event.target.getAttribute("data-modal"))
     if (currentModal === null) {
         console.log("first opening")
-        printHtmlGalleryModal(allWorks) //chargement code HTML de la gallerie modale <div modalGallery>
-        //printHtmlAddPhotoModal() 
-        //target = document.querySelector("#modal")
         document.querySelector("#jsModalClose").addEventListener('click', closeModal)
+        document.querySelector("#jsModalBefore").addEventListener('click', displayGalleryModal)
         document.querySelector("#addButton").addEventListener('click', displayAddPhotoModal)
         document.querySelector("#validButton").addEventListener('click', displayGalleryModal)
-
     }
     console.log("in openModal, target =", target)
     enableModal(target)
     currentModal=target.id
-    //log
     console.log("the ", target.id, " is opened...")
 }
  
@@ -191,7 +241,7 @@ const closeModal = function (event) {
     console.log("in closeModal event=", event) ; console.log("target=", target)
     disableModal(target)
     if (target === "#modal") {
-        document.querySelectorAll("js").removeEventListener("click", closeModal)
+        document.querySelectorAll(".js").removeEventListener("click", closeModal)
         document.querySelector("#modalGallery div").innerHTML= ""
         document.querySelector("#AddPhoto div").innerHTML= ""
         currentModal = null
@@ -200,33 +250,73 @@ const closeModal = function (event) {
 
 }
 
-function printHtmlGalleryModal(works) {
-    const modalGalleryHtml = document.querySelector(".modalGallery")
-    works.forEach(work => {
-        const figureHtml = document.createElement("figure")
-        const imgHtml = document.createElement("img")
-        imgHtml.src = work.imageUrl
-        figureHtml.appendChild(imgHtml)
-        modalGalleryHtml.appendChild(figureHtml)
-    })
-    //log
-    console.log("printHtmlGalleryModal: works =", works)
+
+
+
+/*** https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file modifié ***/
+var inputHtml = document.getElementById("image_uploads");
+var previewHtml = document.querySelector(".preview");
+inputHtml.style.opacity = 0;
+
+inputHtml.addEventListener("change", function(e) {
+  updateImageDisplay()
+})
+// form.evenement("submit", fonction(requete api {post}))
+
+function updateImageDisplay() {
+  while (previewHtml.firstChild) {
+    previewHtml.removeChild(previewHtml.firstChild);
+  }
+
+  var currentFiles = inputHtml.files;
+  if (currentFiles.length === 0) {
+    var paraHtml = document.createElement("p");
+    paraHtml.textContent = "Aucun fichier sélectionné";
+    previewHtml.appendChild(paraHtml);
+  } else {
+    var list = document.createElement("ol");
+    previewHtml.appendChild(list);
+    
+    for (var i = 0; i < currentFiles.length; i++) {
+      console.log("lecture du fichier n°:", i+1)
+      var listItem = document.createElement("li");
+      if (validFileType(currentFiles[i])) {
+        
+        var image = document.createElement("img");
+        image.src = window.URL.createObjectURL(currentFiles[i]);
+
+        listItem.appendChild(image);
+      } else {
+        var paraHtml = document.createElement("p");
+        paraHtml.textContent = "Le format du fichier n'est pas valide";
+        listItem.appendChild(paraHtml);
+      }
+
+      list.appendChild(listItem);
+    }
+  }
 }
 
-function printHtmlAddPhotoModal() {
-    document.querySelector("#sectionAddPhoto").innerHTML =`
-    <p>section AddPhoto</p>    
-    `
-    /*<div class="pictureBox">
-        <img scr="./assets/icons/icone-d-image.png" alt="">
-    </div>
-    `
-    */
+var fileTypes = ["image/jpeg", "image/pjpeg", "image/png"];
+function validFileType(file) {
+  for (var i = 0; i < fileTypes.length; i++) {
+    if (file.type === fileTypes[i]) {
+      return true;
+    }
+  }
 
-    // <input type="file">
+  return false;
 }
 
-
+function returnFileSize(number) {
+  if (number < 1024) {
+    return number + " octets";
+  } else if (number >= 1024 && number < 1048576) {
+    return (number / 1024).toFixed(1) + " Ko";
+  } else if (number >= 1048576) {
+    return (number / 1048576).toFixed(1) + " Mo";
+  }
+}
 
 
 
