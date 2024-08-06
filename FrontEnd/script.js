@@ -57,7 +57,7 @@ function fetchWorks() {
             allWorks = result
             console.log("in fetch allWoks=", allWorks)
         })
-        .catch(error => console.log("Fletch works Error : " + error))
+        .catch(error => console.log("Fetch works Error : " + error))
 }
 
 function fetchCategories() {
@@ -258,16 +258,19 @@ var inputHtml = document.getElementById("image_uploads");
 var previewHtml = document.querySelector(".preview");
 inputHtml.style.opacity = 0;
 
-inputHtml.addEventListener("change", function(e) {
+inputHtml.addEventListener("input", function(e) {
+  testField()
   updateImageDisplay()
 })
-// form.evenement("submit", fonction(requete api {post}))
+
 
 function updateImageDisplay() {
+  
+
   while (previewHtml.firstChild) {
     previewHtml.removeChild(previewHtml.firstChild);
   }
-
+  
   var currentFiles = inputHtml.files;
   if (currentFiles.length === 0) {
     var paraHtml = document.createElement("p");
@@ -295,7 +298,73 @@ function updateImageDisplay() {
       list.appendChild(listItem);
     }
   }
+  var titleForm ="titre essais"
+  var categoryForm= ''
+
+  
+
+  const formData = new FormData()
+  const addTitleForm = document.getElementById("addTitle").value
+  const addCategoryForm = document.getElementById("addCategory").value
+  formData.append('image', currentFiles)
+  formData.append('title', addTitleForm)
+  formData.append('category', addCategoryForm)
+  
+
+  var StatusDownlaod = false
+  const formHtml = document.querySelector("#formFichier")
+  formHtml.addEventListener("submit", function(event) {
+  event.preventDefault()
+    fetch("http://localhost:5678/api/works/", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token },
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          StatusDownlaod = true
+          console.log("submit ok")
+        } else {
+          console.log("erreur de transmission")
+        }
+      })
+      .then(result => {
+        if (StatusDownlaod) {
+          console.log("...download photo ok")
+        } else {
+          console.log("erreur submit 2")
+        }
+      })
+      .catch(error => {
+        console.log("fetch error while connection, " + error + error.status)
+      })
+  })
 }
+
+function testField() {
+  console.log("In TestField")
+  const formField = document.getElementById("formFichier")
+  const inputsText = formField.querySelectorAll('input[type="text"]')
+  const inputFile = formField.querySelector('input[type="file"]')
+  inputsText.forEach(input => {
+    input.addEventListener('input', () => {
+      console.log("In input.EventListener")
+      let allInputs = true
+      inputsText.forEach(input => {
+          if (input.value.trim() === '') {
+            allInputs = false
+            console.log("All fields")
+          }
+      })
+      //if (inputFile.lenght === 0) allInputs = false
+      if(allInputs) {
+          getElementById("validButton").removeAttribute('disabled')
+        } else {
+          getElementById("validButton").setAttribute('disabled', 'disabled')
+        }
+      })
+    })
+  }
 
 var fileTypes = ["image/jpeg", "image/pjpeg", "image/png"];
 function validFileType(file) {
@@ -317,13 +386,6 @@ function returnFileSize(number) {
     return (number / 1048576).toFixed(1) + " Mo";
   }
 }
-
-
-
-
-
-
-
 
 
 

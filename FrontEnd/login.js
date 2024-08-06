@@ -25,7 +25,7 @@ function addListenerFormLogin() {
             body: JSON.stringify({
                 email: emailForm,
                 password: passwordForm
-            }),
+            })
         })
             .then(response => {
                 if (response.ok) {

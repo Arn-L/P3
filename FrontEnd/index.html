@@ -72,7 +72,7 @@
 					<section id="sectionAddPhoto">
 						
 						<!-- https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file -->
-						<form id="formFichier" method="post" enctype="multipart/form-data">
+						<form id="formFichier" enctype="multipart/form-data">
 							<div>
 								<label for="image_uploads">
 									<div class="labelInputPhoto">
@@ -88,22 +88,17 @@
 									multiple />
 							</div>
 							<div>
-								<button type="submit" id="validButton">Envoyer</button>
+								<label for="titre">Titre</label>
+								<input type="string" name="addTitle" id="addTitle">
+								<label for="categorie">Catégorie</label>
+								<input type="categorie" name="addCategory" id="addCategory">
+							
+								<button type="submit" id="validButton" disabled>Envoyer</button>
 							</div>
 						</form>
 						
 
-						<section id="inputModal">
-
-							<form id="photoInfo">
-								<label for="titre">Titre</label>
-								<input type="string" name="titre" id="titre">
-								<label for="categorie">Catégorie</label>
-								<input type="categorie" name="categorie" id="categorie">
-							</form>
-
-					</div>
-					</section>
+						
 				</div>
 
 			</div>

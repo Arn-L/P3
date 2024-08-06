@@ -285,6 +285,16 @@ input[type="submit"], #validButton {
 	height: 200px;
 	width: 200px;
 }
+#validButton {
+	background-color: blue;
+}
+
+#validButton:disabled{
+	background-color:grey;
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 /*
 #validButton {
 font-family: 'Syne';
