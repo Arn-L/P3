@@ -29,16 +29,17 @@
 <body>
 	<header>
 		<div id="banner" class="edition" style="display: none;">
+			<img class="pen" src="./assets/icons/pen.png" alt="pen" style="filter: invert(100%);">
 			Mode édition
 		</div>
-		<div>
+		<div id="head">
 			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 			<nav>
 				<ul>
 					<li>projets</li>
 					<li><a href="#contact">contact</a></li>
 					<li id="log"></li>
-					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+					<li><img class="insta" src="./assets/icons/instagram.png" alt="Instagram"></li>
 				</ul>
 			</nav>
 		</div>
@@ -54,12 +55,14 @@
 	<main>
 		<aside id="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
 			<div class="modalContent">
-				<button id="jsModalBefore" class="js" data-modal="#modal" style="display: none;">
-					<-
+				<div class="jsNav">
+				<button id="jsModalBefore" class="jsNav" data-modal="#modal" style="display: none;">
+					<img src="./assets/icons/vector.png" alt="Back" data-modal="#modal">
 				</button>
-				<button id="jsModalClose" class="js" data-modal="#modal">
-					&times;
+				<button id="jsModalClose" class="jsNav" data-modal="#modal">
+					<img src="./assets/icons/xmark.png" alt="Close" data-modal="#modal">
 				</button>
+				</div>
 
 				<div id="modalGallery" >
 					<h2 class="titleModal">Galerie photo</h2>
@@ -91,9 +94,14 @@
 								<label for="titre">Titre</label>
 								<input type="string" name="addTitle" id="addTitle">
 								<label for="categorie">Catégorie</label>
-								<input type="categorie" name="addCategory" id="addCategory">
+								<select name="addCategory" id="addCategory">
+									<option value=""></option>
+									<option value="Objets">Objets</option>
+									<option value="Appartement">Appartements</option>
+									<option value="Hotle & restaurants">Hotels & restaurants</option>
+								</select>
 							
-								<button type="submit" id="validButton" disabled>Envoyer</button>
+								<button type="submit" id="validButton" >Envoyer</button>
 							</div>
 						</form>
 						
@@ -141,7 +149,10 @@
 		<section id="portfolio">
 			<div class="title">
 				<h2>Mes Projets</h2>
-				<button class="modify edition" data-modal="#modal" style="display: none;">modifier</button>
+				<button class="modify edition" data-modal="#modal" style="display: none;">
+					<img class="pen" src="./assets/icons/pen.png" alt="pen">
+					modifier
+				</button>
 			</div>
 
 

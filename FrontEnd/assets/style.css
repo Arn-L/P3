@@ -54,7 +54,7 @@ body {
 	font-size: 14px;
 }
 
-header div {/**modif*****header {*************/
+header #head {/**modif*****header {*************/
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
@@ -104,12 +104,14 @@ li:hover {
 	font-size: 30px;
 }
 
-#banner {/*a corriger*/
+#banner {
+	
 	text-align: center;
 	background-color: black;
 	color: white;
-	margin: 0;
+	padding: 15px 0px ;
 }
+
 
 #introduction {
 	display: flex;
@@ -122,6 +124,10 @@ li:hover {
 	display: block;
 	margin: auto;
 	width: 80%;
+}
+
+.insta {
+	height: 25px;
 }
 
 #introduction article {
@@ -145,8 +151,7 @@ li:hover {
 	justify-content: center;
 	margin-bottom: 0.5em;
 }
-/*************************************************/
-/*******************modif debut************************/
+
 * { box-sizing: border-box; }
 
 .filtre {
@@ -174,7 +179,17 @@ li:hover {
 	background-color: black;
 	position:initial;
 }
-/*******************modif fin***************************/
+
+.modify {
+	height: 30px;
+	border : none;
+	background-color: rgba(0,0,0,0);
+	padding: 0px 0px 0px 20px;
+}
+
+.pen {
+	padding-right: 8px;
+}
 
 .gallery {
 	width: 100%;
@@ -289,6 +304,12 @@ input[type="submit"], #validButton {
 	background-color: blue;
 }
 
+select {
+	font-size: 0.9rem;
+	padding: 2px 5px;
+  }
+  
+
 #validButton:disabled{
 	background-color:grey;
 	opacity: 0.5;
@@ -331,7 +352,7 @@ footer nav ul {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,100,0.8);
+	background: rgba(0, 0, 0, 0.4);
 }
 
 .modalContent{
@@ -374,16 +395,6 @@ i {
 
 }
 
-.jsModalButton{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #611d5b;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
-}
 
 
 #modalAddPhoto {
@@ -392,8 +403,22 @@ i {
 
 /*** Modale Ajout photo ***/
 .labelInputPhoto {
-	background-color: aquamarine;
+	background-color: rgb(151, 151, 151);
 }
 
-#pictureBox img{
+.jsNav {
+	display: grid;
+	border: none;
+	background-color: rgba(0,0,0,0);
+	font-size: 3em;
+}
+
+#jsModalBefore {
+	justify-self: left;
+	margin-left: 20px;
+}
+
+#jsModalClose {
+	justify-self: right;
+	margin-right: 20px;
 }

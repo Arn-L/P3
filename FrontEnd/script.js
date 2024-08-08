@@ -198,7 +198,7 @@ function enableModal(target) {
 }
 // Désactivation balise Html
 function disableModal(target) {
-    if (target === null) retrun
+    if (target === null) return
     target.style.display = "none"
     target.setAttribute('aria-hidden', 'true')
     target.removeAttribute('aria-modal')
@@ -246,7 +246,7 @@ const closeModal = function (event) {
         document.querySelector("#AddPhoto div").innerHTML= ""
         currentModal = null
     }
-    console.log("the ", target.id, " is closed...")
+    if (target !== null) console.log("the ", target.id, " is closed...")
 
 }
 
@@ -259,7 +259,7 @@ var previewHtml = document.querySelector(".preview");
 inputHtml.style.opacity = 0;
 
 inputHtml.addEventListener("input", function(e) {
-  testField()
+  //testField()
   updateImageDisplay()
 })
 
@@ -279,15 +279,12 @@ function updateImageDisplay() {
   } else {
     var list = document.createElement("ol");
     previewHtml.appendChild(list);
-    
-    for (var i = 0; i < currentFiles.length; i++) {
-      console.log("lecture du fichier n°:", i+1)
-      var listItem = document.createElement("li");
-      if (validFileType(currentFiles[i])) {
         
+      console.log("lecture du fichier n°:", 1)
+      var listItem = document.createElement("li");
+      if (validFileType(currentFiles[0])) {
         var image = document.createElement("img");
-        image.src = window.URL.createObjectURL(currentFiles[i]);
-
+        image.src = window.URL.createObjectURL(currentFiles[0]);
         listItem.appendChild(image);
       } else {
         var paraHtml = document.createElement("p");
@@ -296,29 +293,31 @@ function updateImageDisplay() {
       }
 
       list.appendChild(listItem);
-    }
-  }
-  var titleForm ="titre essais"
-  var categoryForm= ''
-
-  
-
-  const formData = new FormData()
-  const addTitleForm = document.getElementById("addTitle").value
-  const addCategoryForm = document.getElementById("addCategory").value
-  formData.append('image', currentFiles)
-  formData.append('title', addTitleForm)
-  formData.append('category', addCategoryForm)
-  
+    
+  }  
 
   var StatusDownlaod = false
   const formHtml = document.querySelector("#formFichier")
-  formHtml.addEventListener("submit", function(event) {
-  event.preventDefault()
-    fetch("http://localhost:5678/api/works/", {
-      method: "POST",
-      headers: { Authorization: "Bearer " + token },
-      body: formData
+  formHtml.addEventListener("submit", function (event) {
+    event.preventDefault()
+    const jsonObjet ={}
+    jsonObjet['image']= JSON.stringify(currentFiles[0])
+    console.log("formData =", jsonObjet)
+    jsonObjet['title']= document.getElementById("addTitle").value
+    console.log("formData =", jsonObjet)
+    jsonObjet['category']= document.getElementById("addCategory").value
+    console.log("formData =", jsonObjet)
+    console.log("JSON formData =", JSON.stringify(jsonObjet))
+
+
+    fetch("http://localhost:5678/api/works", {
+      method: 'POST',
+      headers: {
+        Authorization: "Bearer " + token,
+        'Content-type': "application/json",
+        'Accept': "application/json"
+      },
+      body: JSON.stringify(jsonObjet)
     })
       .then(response => {
         if (response.ok) {
@@ -340,6 +339,8 @@ function updateImageDisplay() {
       })
   })
 }
+
+
 
 function testField() {
   console.log("In TestField")
@@ -373,20 +374,8 @@ function validFileType(file) {
       return true;
     }
   }
-
   return false;
 }
-
-function returnFileSize(number) {
-  if (number < 1024) {
-    return number + " octets";
-  } else if (number >= 1024 && number < 1048576) {
-    return (number / 1024).toFixed(1) + " Ko";
-  } else if (number >= 1048576) {
-    return (number / 1048576).toFixed(1) + " Mo";
-  }
-}
-
 
 
 console.log("...the modal is loaded")
