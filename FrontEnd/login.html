@@ -16,20 +16,25 @@
 
 <body>
     <header>
-        <div>
-        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-        <nav>
-            <ul>
-                <li><a href="./index.html">projet</a></li>
-                <li>contact</li>
-                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-            </ul>
-        </nav>
-    </div>
-    </header>
+		<div id="banner" class="edition" style="display: none;">
+			<img class="pen" src="./assets/icons/pen.png" alt="pen" style="filter: invert(100%);">
+			Mode édition
+		</div>
+		<div id="head">
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+			<nav>
+				<ul>
+					<li><a href="./index.html">projets</a></li>
+					<li><a href="index.html#contact">contact</a></li>
+					<li><a href="./login.html" data-visited="true">login</a></li>
+					<li><img class="insta" src="./assets/icons/instagram.png" alt="Instagram"></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
 
     <main>
-        <section id="contact">
+        <section id="contact" class=""login">
             <h2>Log In</h2>
             <form id="formLog">
                 <label for="email">E-mail</label>
@@ -39,7 +44,7 @@
                 <input type="submit" value="Se connecter">   
             </form>
             
-            <a href="#">Mot de passe oublié</a>
+            <a href="#"><p>Mot de passe oublié</p></a>
         </section>
     </main>
 

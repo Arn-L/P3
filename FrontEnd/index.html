@@ -72,36 +72,34 @@
 
 				<div id="modalAddPhoto" class="inputFields" aria-hidden="true" style="display: none;">
 					<h2 class="titleModal">Ajout photo</h2>
-					<section id="sectionAddPhoto">
+					
 						
 						<!-- https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file -->
-						<form id="formFichier" enctype="multipart/form-data">
+						<form id="formFichier">
+							<section id="sectionAddPhoto">
+								<div>
+									<label for="image_uploads">
+										<div class="labelInputPhoto">
+											<section class="preview"></section>
+											<div>+ Ajout photo</div>
+											<p>jpg, png: 4mo max</p>
+										</div>
+									</label>
+									<input type="file" id="image_uploads" name="image_uploads" accept="image/jpeg, image/png" currentFiles />
+								</div>
+							</section>
 							<div>
-								<label for="image_uploads">
-									<div class="labelInputPhoto">
-										<section class="preview">
-											<img id="exemple" src="./assets/icons/icone-d-image-grey.png" alt="fichier à télécharger">
-										</section>
-										<div>+ Ajout photo</div>
-										<p>jpg, png: 4mo max</p>
-									</div>
-								</label>
-						
-								<input type="file" id="image_uploads" name="image_uploads" accept="image/.jpg, image/.jpeg, image/.png"
-									multiple />
-							</div>
-							<div>
-								<label for="titre">Titre</label>
-								<input type="string" name="addTitle" id="addTitle">
-								<label for="categorie">Catégorie</label>
+								<label for="addTitle">Titre</label>
+								<input type="text" name="addTitle" id="addTitle">
+								<label for="addCategory">Catégorie</label>
 								<select name="addCategory" id="addCategory">
 									<option value=""></option>
-									<option value="Objets">Objets</option>
-									<option value="Appartement">Appartements</option>
-									<option value="Hotle & restaurants">Hotels & restaurants</option>
+									<option value="1">Objets</option>
+									<option value="2">Appartements</option>
+									<option value="3">Hotels & restaurants</option>
 								</select>
-							
-								<button type="submit" id="validButton" >Envoyer</button>
+						
+								<button type="submit" id="validButton">Envoyer</button>
 							</div>
 						</form>
 						
@@ -126,7 +124,7 @@
 
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img src="./assets/images/sophie-bluel.png" alt="Sophie Bluel">
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>

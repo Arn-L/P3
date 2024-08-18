@@ -28,9 +28,22 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
+	max-width: 1140px;
+	min-height: 1024px;
+	margin:auto;
+	font-family: 'Work Sans' ;
+	font-size: 14px;
+
 }
+
+main {
+	background: #FFFEF8;
+	margin-bottom: auto;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -47,11 +60,14 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
-	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
-	font-size: 14px;
+a {
+	text-decoration: none;
+	color: initial;
+	
+}
+a:visited {
+	font-weight: bold;
+	color: initial;
 }
 
 header #head {/**modif*****header {*************/
@@ -76,7 +92,6 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
 h2{
@@ -131,7 +146,7 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -227,11 +242,16 @@ margin: auto;
 .inputFields h2{
 	margin-bottom: 0px;
 }
+
 #contact form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
+}
+
+#contact a {
+	text-decoration: underline;
 }
 .inputFields form {
 	text-align: left;
@@ -265,6 +285,10 @@ margin: auto;
 }
 
 input[type="submit"], #validButton {
+	
+}
+
+button, input[type="submit"], #validButton {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -273,6 +297,7 @@ input[type="submit"], #validButton {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+
 }
 
 #sectionAddPhoto label div div{
@@ -285,7 +310,6 @@ input[type="submit"], #validButton {
 	border-radius: 60px ;
 }
 #sectionAddPhoto label div{
-	
 	margin : auto auto 10px auto ;
 	padding: 20px 0px;
 	font-family: 'Syne';
@@ -293,7 +317,7 @@ input[type="submit"], #validButton {
 	text-align: center;
 }
 #sectionAddPhoto img{
-	height: 200px;
+	width: 100px;
 }
 
 #exemple {
@@ -328,6 +352,12 @@ font-family: 'Syne';
 	border-radius: 60px ;
 }
 */
+footer {
+	right: 0;
+	
+	background: #FFFEF8;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -356,14 +386,25 @@ footer nav ul {
 }
 
 .modalContent{
-	width: 630px;
-	height: 688px;
+	max-width: 630px;
+	width: 70vw;
+	max-height: 670px;
+	height: 80vw;
 	align-items: center;
 	background-color: #FFF;
+	border-radius: 10px;
 }
 
+#modalGallery {
+	text-align: center;
+}
+
+.titleModal {
+	margin: 40px 0px;
+}
 #sectionGallery {
-	padding: 0px 150px;
+	max-width: 420px;
+	margin: auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-row-gap: 20px;
@@ -371,7 +412,8 @@ footer nav ul {
 }
 
 #sectionGallery img {
-	width: 76px;
+	width: 100%;
+	
 	z-index: 1;
 }
 
@@ -382,17 +424,14 @@ footer nav ul {
 	padding-left: 3px;
 	padding-top: 0px;
 	position:relative ;
-	left: 57px;
+	left: 25px;
 	top: -100px;
-	z-index: 2;
-	/*filter: invert(100%);*/
 	border: none;
 	border-radius: 3px;
 }
 
 i {
 	font-size: 12px;
-
 }
 
 
@@ -401,9 +440,8 @@ i {
 	width: 66%;
 }
 
-/*** Modale Ajout photo ***/
 .labelInputPhoto {
-	background-color: rgb(151, 151, 151);
+	background-color:#E8F1F6;
 }
 
 .jsNav {
@@ -415,10 +453,10 @@ i {
 
 #jsModalBefore {
 	justify-self: left;
-	margin-left: 20px;
+	margin-left: 0px;
 }
 
 #jsModalClose {
 	justify-self: right;
-	margin-right: 20px;
+	margin-right: 0px;
 }
