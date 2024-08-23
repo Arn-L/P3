@@ -4,19 +4,19 @@ console.log("loading script...")
 var _download = true
 var StatusDownlaod = false
 let allWorks = []
-const galleryHtml =document.querySelector(".gallery") // Gallerie page projet
-const modalGalleryHtml = document.querySelector("#sectionGallery") // Gallerie de la modale
+const selectCategoriesHtml = document.getElementById("selectCategories")
+const galleryHtml = document.querySelector(".gallery") // Gallerie page projet
+const modalGalleryHtml = document.querySelector("#sectionGallery") // Gallerie page modale
 
 /**** initialisation ****/
 var token = (localStorage.getItem("token"))
-console.log("token storage=", token)
+console.log("In JS, token storage=", token)// !!! code doit bien sûr être enlevé !!!
 
-
-/**** HTML conditionnel - affichage page principale ****/
+// HTML CONDITIONNEL: Affichage page principale
 const logHtml = document.querySelector("#log")
 const filterHtml = document.querySelector(".filtre")
 if (token != null) {
-  //menu navigation
+  //menu navigation affichage & écoute logout
   logHtml.innerHTML = '<a href="#">logout</a>'
   logHtml.addEventListener("click", function () {
     localStorage.removeItem("token")
@@ -28,7 +28,7 @@ if (token != null) {
   })
   //Filtres désactivés
   filterHtml.style.display = "none"
-  //log
+  // récupération du token
   token = (localStorage.getItem("token"))
   console.log("logout -> token storage=", token)
 } else {
@@ -36,80 +36,102 @@ if (token != null) {
   logHtml.innerHTML = '<a href="./login.html">login</a>'
 }
 
-
-
-/**** page principale - projets ****/
-
-/** chargement des travaux dans allWorks **/
-function fetchWorks() {
-    fetch("http://localhost:5678/api/works/", { method: "GET" })
-        .then(response => response.json())
-        .then(result => {
-            allWorks = result
-            console.log("in fetch allWoks=", allWorks)
-        })
-        .catch(error => console.log("Fetch works Error : " + error))
-}
-
-/** Chargement et affichage des filtres catégories */
-function fetchCategories() {
-    fetch("http://localhost:5678/api/categories/", { method: "GET" })
-        .then(response => response.json())
-        .then(result => {
-            console.log("in fetch Categories=", result)
-            displayCategories(result)
-        })
-        .catch(error => console.log("Fetch categories Error = " + error))
-}
-function displayCategories(categories) {
-    console.log("in display categories=", categories)
-    if (token === null) {
-    categories.forEach(category => {
-        console.log("in forEach : category.id", category.id)
-        //création bouton catégorie (filtre)
-        const buttonHtml = document.createElement("button")
-        buttonHtml.innerText = category.name
-        filterHtml.appendChild(buttonHtml)
-        //évènement bouton filtre ciblées par catégories
-        buttonHtml.addEventListener("click", function () {
-            console.log("filter =", category.id)
-            //tri works
-            worksFilter = allWorks.filter((workItem) => {
-                return workItem.category.id === category.id
-            })
-            galleryHtml.innerHTML = ""
-            displayGallery(worksFilter)
-        })
+// FONCTION: Chargement travaux dans allWorks puis fonction Chargement_catégories
+function fetchGetWorks() {
+  fetch("http://localhost:5678/api/works/", { method: "GET" })
+    .then(response => response.json())
+    .then(result => {
+      allWorks = result
+      console.log("in fetchGetWorks, allWoks=", allWorks)
     })
-    console.log("Button All ok")
-    //création bouton All 
-    const buttonAllHtml = document.createElement("button")
-    buttonAllHtml.innerText = "   Tout   "
-    filterHtml.appendChild(buttonAllHtml)
-    //évènement bouton reset filtre
-    buttonAllHtml.addEventListener("click", function () {
-        console.log("filter = all")
-        galleryHtml.innerHTML = ""
-        displayGallery(allWorks)
-    });
-  }
-    //Affichage gallerie , si mode courant, après création des filtres
-    displayGallery(allWorks)
+    .catch(error => console.log("Fetch works Error : " + error))
 }
-/** construit la gallerie de la page principale
- *  et en mode édition la gallerie modale
- *  ainsi que le fonctionnalité de suppression
- *  et permet aussi d'ajouter un projet supplémentaire */
-function displayGallery(works) {
-  console.log("displayGallery : works =", works)
-  if (!Array.isArray(works)) { 
+
+// FONCTION: Chargement puis fonction Configuration_des_catégories
+function fetchGetCategories() {
+  fetch("http://localhost:5678/api/categories/", { method: "GET" })
+    .then(response => response.json())
+    .then(result => {
+      console.log("in fetchGetCategories, result=", result)
+      displayCategories(result)
+    })
+    .catch(error => console.log("Fetch categories Error = " + error))
+}
+// SOUS-FONCTION: Configuration des catégories puis fonction Configuration_galleries
+function displayCategories(categories) {
+  console.log("in displayCategories, categories=", categories)
+  if (token === null) categories.unshift({ "id": 0, "name": "Tout" })
+  categories.forEach(category => {
+    if (token === null) {
+      // Configuration des filtres
+      displayFilters(category)
+    } else {
+      // options de sélecteur catégories pour modale ajout photo
+      const optionHtml = document.createElement("option")
+      optionHtml.value = JSON.stringify(category.id)
+      optionHtml.innerHTML = category.name
+      selectCategoriesHtml.appendChild(optionHtml)
+    }
+  })
+  // Initialise la gallerie projet
+  displayGalleries(allWorks)
+}
+// SOUS-FONCTION: Configuration d'un filtre
+function displayFilters(category) {
+  const buttonHtml = document.createElement("button")
+  if (category.id === 0) {
+    buttonHtml.className = "submit filterOn"
+  } else {
+    buttonHtml.className = "submit filterOff"
+  }
+  buttonHtml.innerText = category.name
+  filterHtml.appendChild(buttonHtml)
+  //évènement bouton filtre ciblées par catégories
+  buttonHtml.addEventListener("click", function () {
+    // efface toutes les couleurs boutons
+    document.querySelectorAll(".filterOn").forEach(filterON => {
+      filterON.classList.remove("filterOn")
+      filterON.classList.add("filterOff")
+    })
+    // active la couleur bouton du filtre
+    buttonHtml.classList.add("filterOn")
+    //tri works
+    if (category.id === 0) {
+      worksFilter = allWorks
+    } else {
+      worksFilter = allWorks.filter((workItem) => {
+        return workItem.category.id === category.id
+      })
+    }
+    // affichage filtré
+    galleryHtml.innerHTML = ""
+    displayGalleries(worksFilter)
+    console.log("filter =", category.name)
+  })
+  console.log("Configuration filter", category.name, "ok")
+}
+
+// FONCTION configuration des galleries (projet et modales)
+function displayGalleries(works) {
+  /******************************************************
+   * Construit la gallerie projet
+  *  En mode édition :
+  *        construit la gallerie modale
+  *        la suppression de photos
+  *        Prévois l'ajout de projet supplémentaire
+  *******************************************************/
+ 
+  console.log("displayGalleries : works =", works)
+  // création de tableau d'1 élément pour ajout projet
+  if (!Array.isArray(works)) {
     let updateWorks = [works]
     allWorks.push(works)
-    works = updateWorks}
+    works = updateWorks
+  }
   let i = 0
   while (i < works.length) { // permet l'ajout 1 élt
     // HTML de la gallerie courante
-    const work = works[i] //fetch ne supporte pas works[i].id en Url!
+    const work = works[i] // fetch ne supporte pas works[i].id en Url d'API !
     const figureHtml = document.createElement("figure")
     const imgHtml = document.createElement("img")
     imgHtml.src = work.imageUrl
@@ -132,8 +154,8 @@ function displayGallery(works) {
       figureGMHtml.appendChild(buttonGMHtml)
       buttonGMHtml.appendChild(trashGMHtml)
       modalGalleryHtml.appendChild(figureGMHtml)
-      //évènement de suppression
-      buttonGMHtml.addEventListener('click', function () {
+      // FONCTION de suppression
+      const deleteMe = function () {
         console.log("avant suppression allWork=", allWorks)
         // Suppresion dans la base de donnée
         fetch("http://localhost:5678/api/works/" + work.id, {
@@ -151,22 +173,27 @@ function displayGallery(works) {
         figureHtml.remove()
         console.log("after delete, allWorks=", allWorks)
         console.log("Picture deleted !")
-        fetchWorks()
-      })
+        fetchGetWorks()
+        // suppresion de l'écoute poubelle, après suppression
+        buttonGMHtml.removeEventListener('click', deleteMe)
+      }
+      // ecoute de l'évènement poubelle
+      buttonGMHtml.addEventListener('click', deleteMe)
     }
     i += 1
   }
   //log
-  console.log("End of displayGallery printHtmlGalleryModal: works =", works)
+  console.log("End of displayGalleries : works =", works)
 }
 
 if (_download) {
-    _download = !_download
-    console.log("-------- download main page script completed ! ----------")
+  _download = !_download
+  console.log("-------- download main page script completed ! ----------")
 }
 
-fetchWorks()
-fetchCategories()
+fetchGetWorks()
+fetchGetCategories()
+
 
 
 console.log("the modal script is loading...")
@@ -181,40 +208,42 @@ console.log("the modal script is loading...")
 if (token != null) {
   currentModal = null
   const modalHtml = document.querySelector("#modal")
+  const formFichierHtml = document.getElementById("formFichier")
+  const formFieldsHtml = formFichierHtml.querySelectorAll("input, select") // champs de formulaire à surveiller
+  
 
   // Bouton [modifier] page édition
   const modifyHtml = document.querySelector(".modify")
   modifyHtml.addEventListener("click", openModal)
 
-  /**** sous-fonctions gestion contenu de la modale ****/
-  // activation balise Html
+  /**** gestion contenu de la modale ****/
+  // SOUS-FONCTION: activation balise Html
   function enableModal(target) {
     if (target === null) return
     target.style.display = null
     target.removeAttribute('aria-hidden')
     target.setAttribute('aria-modal', 'true')
   }
-  // Désactivation balise Html
+  // SOUS-FONCTION: Désactivation balise Html
   function disableModal(target) {
     if (target === null) return
     target.style.display = "none"
     target.setAttribute('aria-hidden', 'true')
     target.removeAttribute('aria-modal')
   }
-  // affichage modale gallerie
+  // SOUS-FONCTION: affichage modale gallerie
   function displayGalleryModal() {
     disableModal(document.querySelector("#modalAddPhoto"))
     enableModal(document.querySelector("#modalGallery"))
     disableModal(document.querySelector("#jsModalBefore"))
   }
-  //affichage modale ajout photo
+  // SOUS-FONCTION: affichage modale ajout photo
   function displayAddPhotoModal() {
     //Initialisation de la modale ajout projet
     previewHtml.innerHTML = `<img id="exemple" src="./assets/icons/icone-d-image-grey.png" alt="télécharger votre fichier">`
-    const formFichier = document.getElementById("formFichier")
-    const formFields = formFichier.querySelectorAll('input, select, textarea')
-    formFields.forEach((field) => { field.value = "" })
-    _clickFiles = false // initialise la condition de requête submit
+    formFichierHtml.querySelectorAll('input, select').forEach((field) => { field.value = "" })
+    _clickFiles = true // initialise la condition de requête submit
+    document.getElementById("validButton").disabled = true
     //Affichage
     disableModal(document.querySelector("#modalGallery"))
     enableModal(document.querySelector("#modalAddPhoto"))
@@ -226,75 +255,147 @@ if (token != null) {
     displayGalleryModal()
     enableModal(target)
     console.log("modale opening")
+    // création de la fermeture modale overlay
+    document.querySelector("#modal").addEventListener('click', closeModal)
+    document.querySelector(".modalContent").addEventListener('click', stopPropagation)
+    // fermeture de la modale par bouton
     document.querySelector("#jsModalClose").addEventListener('click', closeModal)
+    // navigation des pages gallerie et ajout de la modale
     document.querySelector("#jsModalBefore").addEventListener('click', displayGalleryModal)
     document.querySelector("#addButton").addEventListener('click', displayAddPhotoModal)
+    //log
     console.log("in openModal, target =", target)
-    currentModal = target.id
     console.log("the ", target.id, " is opened...")
+    currentModal = target.id
   }
 
-  function closeModal() {
+  // SOUS-FONCTION: Délimitation overlay
+  const stopPropagation = function (event) {
+    event.stopPropagation()
+  }
+
+  // FONCTION: fermeture modale
+  const closeModal = function (event) {
+    event.preventDefault()
     if (currentModal === null) return
+    console.log("listen click =", event.target)
     const target = document.querySelector("aside")
     disableModal(target)
     console.log("the ", target.id, " is closed...")
     currentModal = null
+    // suppression des écoutes d'évènements
+    document.querySelector("#jsModalBefore").removeEventListener('click', displayGalleryModal)
+    document.querySelector("#addButton").removeEventListener('click', displayAddPhotoModal)
+    document.querySelector("#jsModalClose").removeEventListener('click', closeModal)
+    document.querySelector(".modalContent").removeEventListener('click', stopPropagation)
+    document.querySelector("#modal").removeEventListener('click', closeModal)
   }
 
-
-
-
   /*** source modidié https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file ***/
-  const inputHtml = document.getElementById("image_uploads");
-  const previewHtml = document.querySelector(".preview");
-  inputHtml.style.opacity = 0;
+  // Initialisation de l'input de téléchargement fichier
+  const inputHtml = document.getElementById("imageUploads")
+  const previewHtml = document.querySelector(".preview")
+  inputHtml.style.opacity = 0
+  // écoute d'évènement de téléchargement
   var currentFiles // fichiers photo à ajouter
   inputHtml.addEventListener("change", function (e) {
-    console.log("In imput event click currentFiles=", currentFiles)
+    console.log("In input event click currentFiles=", currentFiles)
+    if (_clickFiles) {
+      completedForm("formFichier", [null, undefined, ''], "validButton", 'input, select')
+      _clickFiles = false
+    }
     updateImageDisplay()
   })
 
-  // gestion formulaire modale d'ajout projet
-  function updateImageDisplay() {
-    //testField() // suveille la complétude du formulaires
-    while (previewHtml.firstChild) { previewHtml.removeChild(previewHtml.firstChild); }
-    console.log("In updateImageDisplay inputHtml.files=", inputHtml.files)
-    console.log("In updateImageDisplay inputHtml.files[0]=", inputHtml.files[0])
-    currentFiles = inputHtml.files[0]
-    console.log("And currentFiles= inputHtml.files[0] :", currentFiles)
-    if (currentFiles === undefined) {
-      const paraHtml = document.createElement("p")
-      paraHtml.textContent = "Aucun fichier sélectionné"
-      previewHtml.appendChild(paraHtml)
+function completedForm(formId, tabValues, ButtonId, entriesHtml) {
+  console.log("In completedForm, entriesHtml=", entriesHtml)
+  const Fields = document.getElementById(formId).querySelectorAll(entriesHtml) 
+  Fields.forEach((field) =>{
+    field.addEventListener('change', () =>{
+  testForm(Fields, tabValues, ButtonId)
+    })
+  })
+}
+
+function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
+  document.getElementById(formId).querySelectorAll(entriesHtml).forEach((field) =>{
+    field.removeEventListener('change', () =>{
+  testForm(formId, tabValues, ButtonId)
+  field.value = forceTab(tabValues)[0]
+    })
+  })
+  document.getElementById(ButtonId).disabled = true
+}
+
+  function testForm(formId, tabValues, ButtonId ) {
+    console.log("In testForm, formId=",formId)
+    if(testFields(formId, tabValues)) {
+      document.getElementById(ButtonId).removeAttribute("disabled")
     } else {
-      const list = document.createElement("ol")
-      previewHtml.appendChild(list)
-      console.log("lecture du fichier")
-      const listItem = document.createElement("li")
-      if (validFileType(currentFiles)) {
-        //apperçu img
-        const image = document.createElement("img")
-        image.src = window.URL.createObjectURL(currentFiles)
-        listItem.appendChild(image)
-      } else {
-        var paraHtml = document.createElement("p")
-        paraHtml.textContent = "Le format du fichier n'est pas valide"
-        listItem.appendChild(paraHtml)
-      }
-      list.appendChild(listItem)
+      document.getElementById(ButtonId).disabled = true
     }
-    
   }
 
- 
-  const formHtml = document.querySelector("#formFichier")
-  formHtml.addEventListener("submit", function (event) {
+  function testFields(formId, tabValues) {
+    for (var input of formId) {
+      console.log("input", input.id,"=", input.value)
+      if (tabValues.includes(input.value)) {
+        console.log("TestField...", false)
+        return false}
+      }
+      console.log("TestField...", true)
+    return true
+  }
+  // SOUS-FONCTION: validité du type de fichier
+  var fileTypes = [4194304, "image/jpeg", "image/pjpeg", "image/png"]
+  function validFileType(file) {
+    for (var i = 1; i < fileTypes.length; i++) {
+      if (file.type === fileTypes[i] && file.size >1 && file.size <= fileTypes[0]) {
+        return true;
+      }
+    }
+    if (file.size > fileTypes[0]) {
+      return "fichier supérieur à "+ fileTypes[0]/1048576+"Mo"
+    } else if (file === undefined || file === '') {
+      return "Aucun fichier sélectionné"
+    } else {
+      return "Le format du fichier n'est pas valide"
+    }
+  }
+
+  // FONCTION: Gestion affichage aperçu d'ajout image
+  let _clickFiles = true
+  function updateImageDisplay() {
+    while (previewHtml.firstChild) { previewHtml.removeChild(previewHtml.firstChild); }
+    currentFiles = inputHtml.files[0]
+    console.log("In updateImageDisplay, currentFiles= inputHtml.files[0] :", currentFiles)
+    if (validFileType(currentFiles) === true) {
+      console.log("lecture du fichier")
+      //apperçu img
+      const image = document.createElement("img")
+      image.src = window.URL.createObjectURL(currentFiles)
+      previewHtml.appendChild(image)
+    } else {
+      const paraHtml = document.createElement("p")
+      paraHtml.innerText = validFileType(currentFiles)
+      previewHtml.appendChild(paraHtml)
+    }
+  }
+
+  
+  
+
+
+
+
+
+
+  formFichierHtml.addEventListener("submit", (event) => {
     event.preventDefault()
     const formData = new FormData()
     formData.append('image', currentFiles)
     formData.append('title', document.getElementById("addTitle").value)
-    formData.append('category', parseInt(document.getElementById("addCategory").value))
+    formData.append('category', parseInt(document.getElementById("selectCategories").value))
     console.log("In POST formData=", formData, formData.title, formData.image, formData.category)
     fetch("http://localhost:5678/api/works", {
       method: 'POST',
@@ -320,9 +421,8 @@ if (token != null) {
           console.log("End of submit, allWorks =", allWorks)
           currentFiles = null
           displayAddPhotoModal()
-          displayGallery(result)
+          displayGalleries(result)
           // document.getElementById("validButton").disabled = true
-
         } else {
           console.log("erreur submit 2")
         }
@@ -331,58 +431,35 @@ if (token != null) {
         console.log("fetch error while connection, " + error + error.status)
       })
   })
+
   
-
-
- function fetchData() {
-      fetchWorks()
-      galleryHtml.innerHTML = ""
-      modalGalleryHtml.innerHTML = ""
-      displayGallery(allWorks)
-      console.log("...update galleries")
-  }
-
-  function testField() {
-    console.log("In TestField")
-    const formFichier = document.getElementById("formFichier")
-    const CurrentFile = formFichier.querySelector('input[type="file"]')
-    const formFields = formFichier.querySelectorAll('input[type="text"], select, textarea'); // Sélectionnez tous les champs de formulaire à surveiller
-    // Créez un tableau pour stocker l'état de remplissage de chaque champ de formulaire
-    let fieldsFilled = Array.from(formFields).map(() => false);
-    formFields.forEach((field, index) => {
-      fieldsFilled[index] = field.value !== ''; // Met à jour l'état de remplissage du champ
-      if ((fieldsFilled.every(filled => filled)) && (CurrentFile.files !== '')) {
-        document.getElementById("validButton").disabled = false
-      } else {
-        document.getElementById("validButton").disabled = true
-      }
-      field.addEventListener('input', function () { // crée les évènement de mise à jours
-        fieldsFilled[index] = field.value !== '';
-        if ((fieldsFilled.every(filled => filled)) && (CurrentFile.files !== '')) {
-          document.getElementById("validButton").disabled = false
-        } else {
-          document.getElementById("validButton").disabled = true
-        }
-      })
-    })
-    CurrentFile.addEventListener('change', function () { // crée l'évènement pour le fichier
-      if ((fieldsFilled.every(filled => filled)) && (CurrentFile.files !== '')) {
-        document.getElementById("validButton").disabled = false
-      } else {
-        document.getElementById("validButton").disabled = true
-      }
-    })
-  }
-
-
-  var fileTypes = ["image/jpeg", "image/pjpeg", "image/png"];
-  function validFileType(file) {
-    for (var i = 0; i < fileTypes.length; i++) {
-      if (file.type === fileTypes[i]) {
-        return true;
-      }
-    }
-    return false;
-  }
   console.log("...the modal is loaded")
+
 }
+
+
+
+
+/*
+  function forceTab(tab1, tab2 = null) {
+    if (Array.isArray(tab2)) {
+      if (Array.isArray(tab2[0])) {
+        return tab2.push(forceTab(tab1))
+      } else {
+        return tab2.push(tab1)
+      }
+    } else if (tab2 !== null) {
+      if (!Array.isArray(tab1)) {
+        return [tab1,  tab2]
+      } else {
+        return tab1.push(tab2)
+      }
+    } else {
+      if (!Array.isArray(tab1)) {
+        let updateTab = [tab1]
+        tab1 = updateTab
+      }
+      return tab1
+    }
+  }
+*/
