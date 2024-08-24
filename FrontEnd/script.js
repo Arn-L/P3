@@ -85,6 +85,11 @@ function displayFilters(category) {
     buttonHtml.className = "submit filterOff"
   }
   buttonHtml.innerText = category.name
+  if (category.name.length < 7) {
+    buttonHtml.classList.add("little")
+  } else {
+    buttonHtml.classList.add("big")
+  }
   filterHtml.appendChild(buttonHtml)
   //évènement bouton filtre ciblées par catégories
   buttonHtml.addEventListener("click", function () {
@@ -151,6 +156,10 @@ function displayGalleries(works) {
       const trashGMHtml = document.createElement("i")
       trashGMHtml.className = "fa-solid fa-trash-can"
       figureGMHtml.appendChild(imgGMHtml)
+      const imgGMHtmlRect = imgGMHtml.getBoundingClientRect()
+      const offset = 100
+      trashGMHtml.style.right = imgGMHtmlRect.left +  "px"
+      trashGMHtml.style.top = imgGMHtmlRect.top + "px"
       figureGMHtml.appendChild(buttonGMHtml)
       buttonGMHtml.appendChild(trashGMHtml)
       modalGalleryHtml.appendChild(figureGMHtml)
@@ -177,7 +186,7 @@ function displayGalleries(works) {
         // suppresion de l'écoute poubelle, après suppression
         buttonGMHtml.removeEventListener('click', deleteMe)
       }
-      // ecoute de l'évènement poubelle
+      // Instance de l'écoute de l'évènement poubelle
       buttonGMHtml.addEventListener('click', deleteMe)
     }
     i += 1
@@ -318,9 +327,10 @@ function completedForm(formId, tabValues, ButtonId, entriesHtml) {
 }
 
 function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
-  document.getElementById(formId).querySelectorAll(entriesHtml).forEach((field) =>{
+  const Fields = document.getElementById(formId).querySelectorAll(entriesHtml) 
+  Fields.forEach((field) =>{
     field.removeEventListener('change', () =>{
-  testForm(formId, tabValues, ButtonId)
+  testForm(Fields, tabValues, ButtonId)
   field.value = forceTab(tabValues)[0]
     })
   })
@@ -372,9 +382,13 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
     if (validFileType(currentFiles) === true) {
       console.log("lecture du fichier")
       //apperçu img
+      document.querySelector(".underPhoto").style.display = "none"
+      document.querySelector("p.underPhoto").style.display = "none"
+
       const image = document.createElement("img")
       image.src = window.URL.createObjectURL(currentFiles)
       previewHtml.appendChild(image)
+
     } else {
       const paraHtml = document.createElement("p")
       paraHtml.innerText = validFileType(currentFiles)
