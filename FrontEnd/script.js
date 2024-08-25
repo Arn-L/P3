@@ -93,12 +93,12 @@ function displayFilters(category) {
   filterHtml.appendChild(buttonHtml)
   //évènement bouton filtre ciblées par catégories
   buttonHtml.addEventListener("click", function () {
-    // efface toutes les couleurs boutons
+    // efface toutes les couleurs boutons (filterOn)
     document.querySelectorAll(".filterOn").forEach(filterON => {
       filterON.classList.remove("filterOn")
       filterON.classList.add("filterOff")
     })
-    // active la couleur bouton du filtre
+    // active la couleur bouton du filtre actif (filterOn)
     buttonHtml.classList.add("filterOn")
     //tri works
     if (category.id === 0) {
@@ -116,25 +116,25 @@ function displayFilters(category) {
   console.log("Configuration filter", category.name, "ok")
 }
 
-// FONCTION configuration des galleries (projet et modales)
+// FONCTION configuration des 2 galleries (projet et modales)
 function displayGalleries(works) {
-  /******************************************************
+  /**---------------------------------------------------/
    * Construit la gallerie projet
   *  En mode édition :
   *        construit la gallerie modale
-  *        la suppression de photos
+  *        la suppression de photos par les poubelles
   *        Prévois l'ajout de projet supplémentaire
-  *******************************************************/
+  -----------------------------------------------------*/
  
   console.log("displayGalleries : works =", works)
-  // création de tableau d'1 élément pour ajout projet
+  // création de tableau d'1 élément pour ajout 1 projet
   if (!Array.isArray(works)) {
     let updateWorks = [works]
     allWorks.push(works)
     works = updateWorks
   }
   let i = 0
-  while (i < works.length) { // permet l'ajout 1 élt
+  while (i < works.length) { // permet l'ajout 1 élt projet (modal ajout photo)
     // HTML de la gallerie courante
     const work = works[i] // fetch ne supporte pas works[i].id en Url d'API !
     const figureHtml = document.createElement("figure")
@@ -151,18 +151,36 @@ function displayGalleries(works) {
       const figureGMHtml = document.createElement("figure")
       const imgGMHtml = document.createElement("img")
       imgGMHtml.src = work.imageUrl
-      //Bouton poubelle de suppression d'image
-      const buttonGMHtml = document.createElement("button")
-      const trashGMHtml = document.createElement("i")
-      trashGMHtml.className = "fa-solid fa-trash-can"
       figureGMHtml.appendChild(imgGMHtml)
-      const imgGMHtmlRect = imgGMHtml.getBoundingClientRect()
-      const offset = 100
-      trashGMHtml.style.right = imgGMHtmlRect.left +  "px"
-      trashGMHtml.style.top = imgGMHtmlRect.top + "px"
-      figureGMHtml.appendChild(buttonGMHtml)
-      buttonGMHtml.appendChild(trashGMHtml)
-      modalGalleryHtml.appendChild(figureGMHtml)
+       //Bouton poubelle de suppression d'image
+       const buttonGMHtml = document.createElement("button")
+       
+       const trashGMHtml = document.createElement("i")
+       trashGMHtml.className = "fa-solid fa-trash-can"
+       figureGMHtml.appendChild(buttonGMHtml)
+       buttonGMHtml.appendChild(trashGMHtml)
+       modalGalleryHtml.appendChild(figureGMHtml)
+       /** -------------------------------------------------------
+        * NE FONCTIONNE PAS : les corrdonnées son géré en CSS  !
+        * FONCTION : corrdonnées dynamique de la poubelle
+       Mais la récupération clientwidth et clientRight du DOM
+       Est empêchée par l'API???
+* ----------------------------------------------------------------
+      imgGMHtml.addEventListener("load", function () {
+        buttonGMHtml.style.position = "relative"
+        const imgGMHtmlRect = imgGMHtml.getBoundingClientRect()
+       console.log("In displayGalleries, imgGMHtmlRect=", imgGMHtmlRect)
+       const offsetRight = -100
+       const offsetTop = -100
+       buttonRight = imgGMHtml.clientWidth + offsetRight
+       buttonGMHtml.style.right = buttonRight 
+       buttonTop = imgGMHtml.clientHeight + offsetTop
+       buttonGMHtml.style.top = buttonTop
+       console.log("In displayGalleries, img clientWidht and clientHeight:", buttonRight, buttonTop)
+       })
+       -----------------------------------------------------------
+       */
+
       // FONCTION de suppression
       const deleteMe = function () {
         console.log("avant suppression allWork=", allWorks)
@@ -271,7 +289,7 @@ if (token != null) {
     document.querySelector("#jsModalClose").addEventListener('click', closeModal)
     // navigation des pages gallerie et ajout de la modale
     document.querySelector("#jsModalBefore").addEventListener('click', displayGalleryModal)
-    document.querySelector("#addButton").addEventListener('click', displayAddPhotoModal)
+    document.querySelector("#addPhotoButton").addEventListener('click', displayAddPhotoModal)
     //log
     console.log("in openModal, target =", target)
     console.log("the ", target.id, " is opened...")
@@ -294,7 +312,7 @@ if (token != null) {
     currentModal = null
     // suppression des écoutes d'évènements
     document.querySelector("#jsModalBefore").removeEventListener('click', displayGalleryModal)
-    document.querySelector("#addButton").removeEventListener('click', displayAddPhotoModal)
+    document.querySelector("#addPhotoButton").removeEventListener('click', displayAddPhotoModal)
     document.querySelector("#jsModalClose").removeEventListener('click', closeModal)
     document.querySelector(".modalContent").removeEventListener('click', stopPropagation)
     document.querySelector("#modal").removeEventListener('click', closeModal)

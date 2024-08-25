@@ -54,18 +54,18 @@
 		<aside id="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
 			<div class="modalContent">
 				<div class="jsNav">
-				<button id="jsModalBefore" class="jsNav" data-modal="#modal" style="display: none;">
-					<img src="./assets/icons/vector.png" alt="Back" data-modal="#modal" style="width: 1.5em; padding-top: 4px;">
-				</button>
-				<button id="jsModalClose" class="jsNav" data-modal="#modal">
-					<img src="./assets/icons/xmark.png" alt="Close" class="jsModalClose" data-modal="#modal" style="height: 2em;">
-				</button>
+					<button id="jsModalBefore" class="jsNav" data-modal="#modal" style="display: none;">
+						<img src="./assets/icons/vector.png" alt="Back" data-modal="#modal" style="width: 1.5em; padding-top: 4px;">
+					</button>
+					<button id="jsModalClose" class="jsNav" data-modal="#modal">
+						<img src="./assets/icons/xmark.png" alt="Close" class="jsModalClose" data-modal="#modal" style="height: 2em;">
+					</button>
 				</div>
 
 				<div id="modalGallery" >
 					<h2 class="titleModal">Galerie photo</h2>
 					<section id="sectionGallery"></section>
-					<button id="addButton" class="submit green js jsModalButton" type="submit" >Ajouter une photo</button>
+					<button id="addPhotoButton" class="submit green js jsModalButton" type="submit" >Ajouter une photo</button>
 				</div>
 
 				<div id="modalAddPhoto" class="inputFields" aria-hidden="true" style="display: none;">
@@ -73,9 +73,10 @@
 				
 				
 					<!-- https://developer.mozilla.org/fr/docs/Web/HTML/Element/input/file -->
+					<section id="sectionAddPhoto"></section>
 					<form id="formFichier">
 						
-						<section id="sectionAddPhoto">
+						
 							
 							<div>
 								
@@ -83,14 +84,14 @@
 									
 									<div class="labelInputPhoto">
 										<section class="preview"></section>
-										<div class="submit buttonAdd underPhoto">+ Ajout photo</div>
+										<button class="submit underPhoto">+ Ajout photo</button>
 										<p class="underPhoto">jpg, png: 4mo max</p>
 									</div>
 								</label>
 								<input type="file" id="imageUploads" name="imageUploads" accept="image/jpeg, image/png"
 									currentFiles />
 							</div>
-						</section>
+						
 						<div>
 							<label for="addTitle">Titre</label>
 							<input type="text" name="addTitle" id="addTitle" />
@@ -102,6 +103,7 @@
 							</button>
 						</div>
 					</form>
+				</section>
 				
 				
 				
