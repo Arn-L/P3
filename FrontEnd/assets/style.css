@@ -29,6 +29,11 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
+body {
+	background-color: #FFFEF8;
+
+}
+
 main {
 	line-height: 1;
 	max-width: 1140px;
@@ -93,7 +98,6 @@ a:visited {
 li {
 	color: initial;
 	font-size: 16px;
-	font-weight: 400;
 	
 	padding: 0 20px;
 }
@@ -271,7 +275,7 @@ nav li {
 .filterOff{
 	color : #1D6154;
 	background-color: transparent;
-	border:solid #1D6154 2px;	
+	border:solid #1D6154 1px;	
 }
 .filterOn {
 	color: white;
@@ -281,7 +285,7 @@ nav li {
 .inputFields p, form p {
 	color:black;
 	margin-top: 1em;
-	margin-bottom: 2em;
+	margin-bottom: 1em;
 }
 
 input, select, textarea {
@@ -308,6 +312,10 @@ form {
 
 /*----------------------*/
 
+
+#contact .submit {
+	margin-bottom: 50px;
+}
 #validButton:disabled{
 	background-color:grey;
 	opacity: 0.6;
@@ -367,6 +375,8 @@ footer nav ul {
 	max-width: 630px;
 	width: 70vw;
 	max-height: 670px;
+	min-height: 504px;
+	min-width: 467px;
 	height: 80vw;
 	background-color: #FFF;
 	border-radius: 10px;
@@ -405,9 +415,34 @@ footer nav ul {
 	text-align: center;
 }
 .titleModal {
-	margin: 24px 0;
+	margin: 20px 0;
 	padding: 0;
+	color:black;
+	font-family: Work Sans;
+font-size: 26px;
+font-weight: 400;
+line-height: 30.5px;
+text-align: center;
 }
+
+#modalAddPhoto .titleModal {
+	margin-top: 30px;
+}
+
+#modalAddPhoto input, #modalAddPhoto select {
+	margin: 0.5em 0 2.5em 0;
+ }
+	.line {
+	border: none;
+	border-top: 1px solid #B3B3B3;
+	margin: 10px auto 30px auto;
+}
+#modalGallery .line {
+	width: 70%;
+	margin: 50px auto 40px auto;
+
+}
+
 #sectionGallery {
 	max-width: 400px;
 	margin: auto;
@@ -416,30 +451,32 @@ footer nav ul {
 	grid-row-gap: 10px;
 	grid-column-gap: 8px;
 	margin-bottom: 30px;
-	max-height: 550px;
+	max-height: 325px;
     overflow: auto;
 }
 #sectionGallery img {
 	width: 100%;
 }
+#sectionGallery figure {
+	position: relative;
+	
+}
+
 #sectionGallery button { /*trash*/
 	background-color: white;
 	height: 18px;
 	width: 16px;
-	padding-left: 3px;
-	padding-top: 0px;
-	position: relative;
-	
-	left: 35%;
-	bottom: 83%;
-	
+	position: absolute;
+	right: 5px;
+	Top: 5px;
 	border: none;
 	border-radius: 3px;
 	filter: invert(100%);
+	padding :0 0 1px 0;	
 }
 
-i {
-	font-size: 12px;
+#sectionGallery button i {
+	font-size: 10px;
 }
 
 
@@ -479,15 +516,24 @@ i {
 
 .labelInputPhoto .submit {
 	background-color: #CBD6DC ;
-	padding: 6px;
+	padding: 10px;
 	text-align: center;
 }
 
+.labelInputPhoto div {
+	width: 173px;
+	margin: auto;
+
+}
+
 #modalAddPhoto form{
-	width: 80%;
+	width: 70%;
+	color: #306685;
 	}
 
 .preview {
+	margin:0;
+	padding: 0;
 }
 
 .preview img {

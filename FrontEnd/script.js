@@ -36,7 +36,7 @@ if (token != null) {
   logHtml.innerHTML = '<a href="./login.html">login</a>'
 }
 
-// FONCTION: Chargement travaux dans allWorks puis fonction Chargement_catégories
+// FONCTION: Chargement travaux dans allWorks puis APPEL fonction Chargement_catégories
 function fetchGetWorks() {
   fetch("http://localhost:5678/api/works/", { method: "GET" })
     .then(response => response.json())
@@ -47,7 +47,7 @@ function fetchGetWorks() {
     .catch(error => console.log("Fetch works Error : " + error))
 }
 
-// FONCTION: Chargement puis fonction Configuration_des_catégories
+// FONCTION: Chargement puis APPEL fonction Configuration_des_catégories
 function fetchGetCategories() {
   fetch("http://localhost:5678/api/categories/", { method: "GET" })
     .then(response => response.json())
@@ -57,7 +57,7 @@ function fetchGetCategories() {
     })
     .catch(error => console.log("Fetch categories Error = " + error))
 }
-// SOUS-FONCTION: Configuration des catégories puis fonction Configuration_galleries
+// SOUS-FONCTION: Configuration des catégories puis APPEL fonction Configuration_galleries
 function displayCategories(categories) {
   console.log("in displayCategories, categories=", categories)
   if (token === null) categories.unshift({ "id": 0, "name": "Tout" })
@@ -125,7 +125,7 @@ function displayGalleries(works) {
   *        la suppression de photos par les poubelles
   *        Prévois l'ajout de projet supplémentaire
   -----------------------------------------------------*/
- 
+
   console.log("displayGalleries : works =", works)
   // création de tableau d'1 élément pour ajout 1 projet
   if (!Array.isArray(works)) {
@@ -152,34 +152,14 @@ function displayGalleries(works) {
       const imgGMHtml = document.createElement("img")
       imgGMHtml.src = work.imageUrl
       figureGMHtml.appendChild(imgGMHtml)
-       //Bouton poubelle de suppression d'image
-       const buttonGMHtml = document.createElement("button")
-       
-       const trashGMHtml = document.createElement("i")
-       trashGMHtml.className = "fa-solid fa-trash-can"
-       figureGMHtml.appendChild(buttonGMHtml)
-       buttonGMHtml.appendChild(trashGMHtml)
-       modalGalleryHtml.appendChild(figureGMHtml)
-       /** -------------------------------------------------------
-        * NE FONCTIONNE PAS : les corrdonnées son géré en CSS  !
-        * FONCTION : corrdonnées dynamique de la poubelle
-       Mais la récupération clientwidth et clientRight du DOM
-       Est empêchée par l'API???
-* ----------------------------------------------------------------
-      imgGMHtml.addEventListener("load", function () {
-        buttonGMHtml.style.position = "relative"
-        const imgGMHtmlRect = imgGMHtml.getBoundingClientRect()
-       console.log("In displayGalleries, imgGMHtmlRect=", imgGMHtmlRect)
-       const offsetRight = -100
-       const offsetTop = -100
-       buttonRight = imgGMHtml.clientWidth + offsetRight
-       buttonGMHtml.style.right = buttonRight 
-       buttonTop = imgGMHtml.clientHeight + offsetTop
-       buttonGMHtml.style.top = buttonTop
-       console.log("In displayGalleries, img clientWidht and clientHeight:", buttonRight, buttonTop)
-       })
-       -----------------------------------------------------------
-       */
+      //Bouton poubelle de suppression d'image
+      const buttonGMHtml = document.createElement("button")
+
+      const trashGMHtml = document.createElement("i")
+      trashGMHtml.className = "fa-solid fa-trash-can"
+      figureGMHtml.appendChild(buttonGMHtml)
+      buttonGMHtml.appendChild(trashGMHtml)
+      modalGalleryHtml.appendChild(figureGMHtml)
 
       // FONCTION de suppression
       const deleteMe = function () {
@@ -237,7 +217,7 @@ if (token != null) {
   const modalHtml = document.querySelector("#modal")
   const formFichierHtml = document.getElementById("formFichier")
   const formFieldsHtml = formFichierHtml.querySelectorAll("input, select") // champs de formulaire à surveiller
-  
+
 
   // Bouton [modifier] page édition
   const modifyHtml = document.querySelector(".modify")
@@ -276,19 +256,29 @@ if (token != null) {
     enableModal(document.querySelector("#modalAddPhoto"))
     enableModal(document.querySelector("#jsModalBefore"))
   }
-
+  
+  // FONCTION: ouverture de la modale
+  // (fonction à vocation générique: si target est un paramètre, -> plusieurs modales)
   function openModal() {
     const target = document.querySelector("aside")
     displayGalleryModal()
     enableModal(target)
     console.log("modale opening")
     // création de la fermeture modale overlay
+    
+    document.querySelector("#modal").removeEventListener('click', closeModal)
     document.querySelector("#modal").addEventListener('click', closeModal)
+    
+    document.querySelector(".modalContent").removeEventListener('click', stopPropagation)
     document.querySelector(".modalContent").addEventListener('click', stopPropagation)
     // fermeture de la modale par bouton
+    
+    document.querySelector("#jsModalClose").removeEventListener('click', closeModal)
     document.querySelector("#jsModalClose").addEventListener('click', closeModal)
     // navigation des pages gallerie et ajout de la modale
+    document.querySelector("#jsModalBefore").removeEventListener('click', displayGalleryModal)
     document.querySelector("#jsModalBefore").addEventListener('click', displayGalleryModal)
+    document.querySelector("#addPhotoButton").removeEventListener('click', displayAddPhotoModal)
     document.querySelector("#addPhotoButton").addEventListener('click', displayAddPhotoModal)
     //log
     console.log("in openModal, target =", target)
@@ -301,7 +291,7 @@ if (token != null) {
     event.stopPropagation()
   }
 
-  // FONCTION: fermeture modale
+  // FONCTION: fermeture modale (currentModal: sécurité et pour plusieurs modales)
   const closeModal = function (event) {
     event.preventDefault()
     if (currentModal === null) return
@@ -334,30 +324,33 @@ if (token != null) {
     updateImageDisplay()
   })
 
-function completedForm(formId, tabValues, ButtonId, entriesHtml) {
-  console.log("In completedForm, entriesHtml=", entriesHtml)
-  const Fields = document.getElementById(formId).querySelectorAll(entriesHtml) 
-  Fields.forEach((field) =>{
-    field.addEventListener('change', () =>{
-  testForm(Fields, tabValues, ButtonId)
+  function completedForm(formId, tabValues, ButtonId, entriesHtml) {
+    console.log("In completedForm, entriesHtml=", entriesHtml)
+    const Fields = document.getElementById(formId).querySelectorAll(entriesHtml)
+    Fields.forEach((field) => {
+      field.removeEventListener('change', () => {
+        testForm(Fields, tabValues, ButtonId)
+      })
+      field.addEventListener('change', () => {
+        testForm(Fields, tabValues, ButtonId)
+      })
     })
-  })
-}
+  }
 
-function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
-  const Fields = document.getElementById(formId).querySelectorAll(entriesHtml) 
-  Fields.forEach((field) =>{
-    field.removeEventListener('change', () =>{
-  testForm(Fields, tabValues, ButtonId)
-  field.value = forceTab(tabValues)[0]
+  function initCompletedForm(formId, tabValues, ButtonId, entriesHtml) {
+    const Fields = document.getElementById(formId).querySelectorAll(entriesHtml)
+    Fields.forEach((field) => {
+      field.removeEventListener('change', () => {
+        testForm(Fields, tabValues, ButtonId)
+        field.value = forceTab(tabValues)[0]
+      })
     })
-  })
-  document.getElementById(ButtonId).disabled = true
-}
+    document.getElementById(ButtonId).disabled = true
+  }
 
-  function testForm(formId, tabValues, ButtonId ) {
-    console.log("In testForm, formId=",formId)
-    if(testFields(formId, tabValues)) {
+  function testForm(formId, tabValues, ButtonId) {
+    console.log("In testForm, formId=", formId)
+    if (testFields(formId, tabValues)) {
       document.getElementById(ButtonId).removeAttribute("disabled")
     } else {
       document.getElementById(ButtonId).disabled = true
@@ -366,24 +359,25 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
 
   function testFields(formId, tabValues) {
     for (var input of formId) {
-      console.log("input", input.id,"=", input.value)
+      console.log("input", input.id, "=", input.value)
       if (tabValues.includes(input.value)) {
         console.log("TestField...", false)
-        return false}
+        return false
       }
-      console.log("TestField...", true)
+    }
+    console.log("TestField...", true)
     return true
   }
   // SOUS-FONCTION: validité du type de fichier
   var fileTypes = [4194304, "image/jpeg", "image/pjpeg", "image/png"]
   function validFileType(file) {
     for (var i = 1; i < fileTypes.length; i++) {
-      if (file.type === fileTypes[i] && file.size >1 && file.size <= fileTypes[0]) {
+      if (file.type === fileTypes[i] && file.size > 1 && file.size <= fileTypes[0]) {
         return true;
       }
     }
     if (file.size > fileTypes[0]) {
-      return "fichier supérieur à "+ fileTypes[0]/1048576+"Mo"
+      return "fichier supérieur à " + fileTypes[0] / 1048576 + "Mo"
     } else if (file === undefined || file === '') {
       return "Aucun fichier sélectionné"
     } else {
@@ -406,6 +400,7 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
       const image = document.createElement("img")
       image.src = window.URL.createObjectURL(currentFiles)
       previewHtml.appendChild(image)
+      testForm("formFichier", [null, undefined, ''], "validButton")
 
     } else {
       const paraHtml = document.createElement("p")
@@ -413,11 +408,6 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
       previewHtml.appendChild(paraHtml)
     }
   }
-
-  
-  
-
-
 
 
 
@@ -464,7 +454,7 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
       })
   })
 
-  
+
   console.log("...the modal is loaded")
 
 }
@@ -472,7 +462,9 @@ function initCompletedForm(formId, tabValues, ButtonId, entriesHtml ) {
 
 
 
-/*
+/* projet de fonction surchagée de concaténation de type de classe
+ ou de classe de type
+
   function forceTab(tab1, tab2 = null) {
     if (Array.isArray(tab2)) {
       if (Array.isArray(tab2[0])) {
