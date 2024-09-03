@@ -55,7 +55,7 @@ function fetchGetCategories() {
       console.log("in fetchGetCategories, result=", result)
       displayCategories(result)
     })
-    .catch(error => alarm("Erreur de chargement de données = " + error))
+    .catch(error => alert("Erreur de chargement de données = " + error))
 }
 // SOUS-FONCTION: Configuration des catégories puis APPEL fonction Configuration_galleries
 function displayCategories(categories) {
@@ -173,7 +173,7 @@ function displayGalleries(works) {
           .then(result => {
             console.log("supprime", result)
           })
-          .catch(error => alarm("Erreur de chargement de données = " + error))
+          .catch(error => alert("Erreur de chargement de données = " + error))
         //suppression sur la page projet & la modale
         allWorks = allWorks.filter(w => w.id !== work.id)
         figureGMHtml.remove()
@@ -451,7 +451,7 @@ if (token != null) {
       })
       .catch(error => {
         console.log("fetch error while connection, " + error + error.status)
-        alarm("Erreur de chargement de données = " + error)
+        alert("Erreur de chargement de données = " + error)
       })
   })
 
