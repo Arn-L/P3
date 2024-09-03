@@ -55,7 +55,7 @@ function fetchGetCategories() {
       console.log("in fetchGetCategories, result=", result)
       displayCategories(result)
     })
-    .catch(error => console.log("Fetch categories Error = " + error))
+    .catch(error => alarm("Erreur de chargement de données = " + error))
 }
 // SOUS-FONCTION: Configuration des catégories puis APPEL fonction Configuration_galleries
 function displayCategories(categories) {
@@ -173,7 +173,7 @@ function displayGalleries(works) {
           .then(result => {
             console.log("supprime", result)
           })
-          .catch(error => console.log("Erreur d'accès à la base de donnée lors de la suppression", error))
+          .catch(error => alarm("Erreur de chargement de données = " + error))
         //suppression sur la page projet & la modale
         allWorks = allWorks.filter(w => w.id !== work.id)
         figureGMHtml.remove()
@@ -248,6 +248,8 @@ if (token != null) {
   function displayAddPhotoModal() {
     //Initialisation de la modale ajout projet
     previewHtml.innerHTML = `<img id="exemple" src="./assets/icons/icone-d-image-grey.png" alt="télécharger votre fichier">`
+    //apperçu img
+    document.querySelector(".underPhoto").style.display = 'block'
     formFichierHtml.querySelectorAll('input, select').forEach((field) => { field.value = "" })
     _clickFiles = true // initialise la condition de requête submit
     document.getElementById("validButton").disabled = true
@@ -256,7 +258,7 @@ if (token != null) {
     enableModal(document.querySelector("#modalAddPhoto"))
     enableModal(document.querySelector("#jsModalBefore"))
   }
-  
+
   // FONCTION: ouverture de la modale
   // (fonction à vocation générique: si target est un paramètre, -> plusieurs modales)
   function openModal() {
@@ -265,14 +267,14 @@ if (token != null) {
     enableModal(target)
     console.log("modale opening")
     // création de la fermeture modale overlay
-    
+
     document.querySelector("#modal").removeEventListener('click', closeModal)
     document.querySelector("#modal").addEventListener('click', closeModal)
-    
+
     document.querySelector(".modalContent").removeEventListener('click', stopPropagation)
     document.querySelector(".modalContent").addEventListener('click', stopPropagation)
     // fermeture de la modale par bouton
-    
+
     document.querySelector("#jsModalClose").removeEventListener('click', closeModal)
     document.querySelector("#jsModalClose").addEventListener('click', closeModal)
     // navigation des pages gallerie et ajout de la modale
@@ -395,8 +397,6 @@ if (token != null) {
       console.log("lecture du fichier")
       //apperçu img
       document.querySelector(".underPhoto").style.display = "none"
-      document.querySelector("p.underPhoto").style.display = "none"
-
       const image = document.createElement("img")
       image.src = window.URL.createObjectURL(currentFiles)
       previewHtml.appendChild(image)
@@ -451,6 +451,7 @@ if (token != null) {
       })
       .catch(error => {
         console.log("fetch error while connection, " + error + error.status)
+        alarm("Erreur de chargement de données = " + error)
       })
   })
 
@@ -458,32 +459,3 @@ if (token != null) {
   console.log("...the modal is loaded")
 
 }
-
-
-
-
-/* projet de fonction surchagée de concaténation de type de classe
- ou de classe de type
-
-  function forceTab(tab1, tab2 = null) {
-    if (Array.isArray(tab2)) {
-      if (Array.isArray(tab2[0])) {
-        return tab2.push(forceTab(tab1))
-      } else {
-        return tab2.push(tab1)
-      }
-    } else if (tab2 !== null) {
-      if (!Array.isArray(tab1)) {
-        return [tab1,  tab2]
-      } else {
-        return tab1.push(tab2)
-      }
-    } else {
-      if (!Array.isArray(tab1)) {
-        let updateTab = [tab1]
-        tab1 = updateTab
-      }
-      return tab1
-    }
-  }
-*/

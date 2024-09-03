@@ -3,19 +3,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -23,9 +91,19 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block;
 }
 
@@ -38,9 +116,9 @@ main {
 	line-height: 1;
 	max-width: 1140px;
 	min-height: 1024px;
-	margin:auto;
+	margin: auto;
 	padding: 0 12px;
-	font-family: 'Work Sans' ;
+	font-family: 'Work Sans';
 	font-size: 14px;
 	background: #FFFEF8;
 }
@@ -48,15 +126,16 @@ main {
 header {
 	width: 100vw;
 	position: static;
-	left:0;
-	top:0;
+	left: 0;
+	top: 0;
 	text-align: center;
 	background-color: black;
 	color: white;
-	padding: 15px 0px ;
+	padding: 15px 0px;
 }
 
-#head {/**modif*****header {*************/
+#head {
+	/**modif*****header {*************/
 	display: flex;
 	justify-content: space-between;
 	margin: 43px 0 113px 0;
@@ -67,17 +146,24 @@ main {
 	padding: 0 90px;
 }
 
-ol, ul {
+ol,
+ul {
 	list-style: none;
 }
-blockquote, q {
+
+blockquote,
+q {
 	quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -87,18 +173,18 @@ a {
 	text-decoration: none;
 	color: initial;
 }
+
 #login a {
-	text-decoration: underline ;
+	text-decoration: underline;
 	margin: 24px
 }
 
-a:visited {
-}
+a:visited {}
 
 li {
 	color: initial;
 	font-size: 16px;
-	
+
 	padding: 0 20px;
 }
 
@@ -106,11 +192,12 @@ li:hover {
 	color: initial;
 	font-weight: 700;
 }
+
 section {
 	/*margin: 50px;*/
 }
 
-h1{
+h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
@@ -119,17 +206,17 @@ h1{
 	color: #B1663C;
 }
 
-h1 > span {
+h1>span {
 	margin: 6px;
 	font-family: 'Work Sans';
-	font-size:9px;
+	font-size: 9px;
 	letter-spacing: 0.1em;
 	font-weight: 500;
 }
 
 
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 27px;
@@ -138,15 +225,15 @@ h2{
 
 
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
 
 }
-nav li {
-	
-}
+
+nav li {}
 
 
 .insta {
@@ -159,9 +246,11 @@ nav li {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1;
 }
+
 #introduction img {
 	display: block;
 	margin: 0 auto 0 0;
@@ -172,6 +261,7 @@ nav li {
 	flex: 1;
 	margin-left: 7%;
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 	text-align: left;
@@ -186,7 +276,7 @@ nav li {
 }
 
 .title {
-	display: flex; 
+	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: baseline;
@@ -195,68 +285,72 @@ nav li {
 }
 
 
-.title p, {
-	color:black;
-	margin-top: 1em;
-	margin-bottom: 2em;
+.title p,
+{
+color: black;
+margin-top: 1em;
+margin-bottom: 2em;
 }
 
 .modify {
 	height: 30px;
-	border : none;
-	background-color:transparent;
+	border: none;
+	background-color: transparent;
 	padding: 0px 0px 0px 20px;
 }
+
 .pen {
 	padding-right: 8px;
 	padding-left: 8px;
 }
+
 .title button {
-	display: flex; 
+	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
 
 .filtre {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	margin-bottom: 30px;
 	padding: 0px 300px 0px 300px;
 }
 
 .filtre div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	border: solid #612b1d;
-    border-radius: 30px;
-    font-weight: bold;
+	border-radius: 30px;
+	font-weight: bold;
 }
 
 .submit {
 	font-family: 'Syne';
 	font-weight: 500;
-	margin : 0.5em 0.5em ;
+	margin: 0.5em 0.5em;
 	padding-top: 6px;
 	padding-bottom: 6px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
 	white-space: nowrap;
 	border: none;
 }
 
-.big{
+.big {
 	padding: 6px 10px;
 }
 
 .little {
-	
+
 	min-width: 100px;
 
 
 }
+
 .green {
 	color: white;
 	background-color: #1D6154;
@@ -272,23 +366,28 @@ nav li {
 	background-color: #0E2F28;
 }
 
-.filterOff{
-	color : #1D6154;
+.filterOff {
+	color: #1D6154;
 	background-color: transparent;
-	border:solid #1D6154 1px;	
+	border: solid #1D6154 1px;
 }
+
 .filterOn {
 	color: white;
 	background-color: #1D6154;
 }
+
 /*--- formulaire générique --------------------*/
-.inputFields p, form p {
-	color:black;
+.inputFields p,
+form p {
+	color: black;
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -307,7 +406,7 @@ input, select, textarea {
 }
 
 form {
-	width: 50%;	
+	width: 50%;
 }
 
 /*----------------------*/
@@ -316,12 +415,16 @@ form {
 #contact .submit {
 	margin-bottom: 50px;
 }
-#validButton:disabled{
-	background-color:grey;
+
+#validButton:disabled {
+	background-color: grey;
 	opacity: 0.6;
 	cursor: not-allowed;
 }
-* { box-sizing: border-box; }
+
+* {
+	box-sizing: border-box;
+}
 
 
 .gallery {
@@ -330,7 +433,7 @@ form {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
-	
+
 }
 
 .gallery img {
@@ -339,9 +442,9 @@ form {
 
 
 footer {
-	position:static;
+	position: static;
 	right: 0;
-	bottom:0;
+	bottom: 0;
 	background: #FFFFFF;
 }
 
@@ -371,7 +474,7 @@ footer nav ul {
 	margin: 0;
 }
 
-.modalContent{
+.modalContent {
 	max-width: 630px;
 	width: 70vw;
 	max-height: 670px;
@@ -399,7 +502,7 @@ footer nav ul {
 	width: 3em;
 	grid-column-start: 1;
 	grid-column-end: 2;
-	
+
 	vertical-align: baseline;
 
 }
@@ -407,36 +510,40 @@ footer nav ul {
 #jsModalClose {
 	width: 3em;
 	grid-column-start: 4;
-  grid-column-end: 3;
+	grid-column-end: 3;
 	vertical-align: baseline;
 }
 
 #modalGallery {
 	text-align: center;
 }
+
 .titleModal {
 	margin: 20px 0;
 	padding: 0;
-	color:black;
+	color: black;
 	font-family: Work Sans;
-font-size: 26px;
-font-weight: 400;
-line-height: 30.5px;
-text-align: center;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30.5px;
+	text-align: center;
 }
 
 #modalAddPhoto .titleModal {
 	margin-top: 30px;
 }
 
-#modalAddPhoto input, #modalAddPhoto select {
+#modalAddPhoto input,
+#modalAddPhoto select {
 	margin: 0.5em 0 2.5em 0;
- }
-	.line {
+}
+
+.line {
 	border: none;
 	border-top: 1px solid #B3B3B3;
 	margin: 10px auto 30px auto;
 }
+
 #modalGallery .line {
 	width: 70%;
 	margin: 50px auto 40px auto;
@@ -452,17 +559,20 @@ text-align: center;
 	grid-column-gap: 8px;
 	margin-bottom: 30px;
 	max-height: 325px;
-    overflow: auto;
+	overflow: auto;
 }
+
 #sectionGallery img {
 	width: 100%;
 }
+
 #sectionGallery figure {
 	position: relative;
-	
+
 }
 
-#sectionGallery button { /*trash*/
+#sectionGallery button {
+	/*trash*/
 	background-color: white;
 	height: 18px;
 	width: 16px;
@@ -472,7 +582,7 @@ text-align: center;
 	border: none;
 	border-radius: 3px;
 	filter: invert(100%);
-	padding :0 0 1px 0;	
+	padding: 0 0 1px 0;
 }
 
 #sectionGallery button i {
@@ -505,17 +615,17 @@ text-align: center;
 
 .labelInputPhoto {
 	object-fit: cover;
-	margin :0px auto 0px auto ;
+	margin: 0px auto 0px auto;
 	padding: 10px 0 1px 0;
 	font-family: 'Syne';
 	font-weight: 700;
 	text-align: center;
 	background: #E8F1F6;
-	
+
 }
 
 .labelInputPhoto .submit {
-	background-color: #CBD6DC ;
+	background-color: #CBD6DC;
 	padding: 10px;
 	text-align: center;
 }
@@ -526,19 +636,18 @@ text-align: center;
 
 }
 
-#modalAddPhoto form{
+#modalAddPhoto form {
 	width: 70%;
 	color: #306685;
-	}
+}
 
 .preview {
-	margin:0;
+	margin: 0;
 	padding: 0;
 }
 
 .preview img {
-	color:#B9C5CC;
+	color: #B9C5CC;
 	width: 15%;
 	object-fit: cover;
 }
-
